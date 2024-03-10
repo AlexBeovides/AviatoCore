@@ -1,1 +1,1 @@
-# AviatoCore
+An ASP.NET Core Web API, adhering to Clean Architecture, tailored for airport management.
