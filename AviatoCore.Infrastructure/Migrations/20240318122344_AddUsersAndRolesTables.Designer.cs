@@ -3,6 +3,7 @@ using AviatoCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AviatoCore.Infrastructure.Migrations
 {
     [DbContext(typeof(AviatoDbContext))]
-    partial class AviatoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318122344_AddUsersAndRolesTables")]
+    partial class AddUsersAndRolesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,38 +69,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Role");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CanModifyAirports = true,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CanModifyAirports = false,
-                            Name = "Director"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CanModifyAirports = false,
-                            Name = "Security"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CanModifyAirports = false,
-                            Name = "Maintenance"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CanModifyAirports = false,
-                            Name = "Client"
-                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.User", b =>
@@ -134,17 +105,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
 
                     b.UseTptMappingStrategy();
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@admin.com",
-                            Name = "admin",
-                            Password = "admin",
-                            RoleId = 1,
-                            Surname = "admin"
-                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.Client", b =>

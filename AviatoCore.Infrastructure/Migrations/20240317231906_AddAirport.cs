@@ -25,21 +25,6 @@ namespace AviatoCore.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Airports", x => x.Id);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClientType = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                });
         }
 
         /// <inheritdoc />
@@ -47,9 +32,6 @@ namespace AviatoCore.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Airports");
-
-            migrationBuilder.DropTable(
-                name: "Clients");
         }
     }
 }
