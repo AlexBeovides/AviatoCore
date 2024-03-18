@@ -15,6 +15,7 @@ namespace AviatoCore.Infrastructure
         {
         }
 
+        public DbSet<Airport> Airports { get; set; }
         public DbSet<Client> Clients { get; set; }
 
         // Add other DbSets for your other entities

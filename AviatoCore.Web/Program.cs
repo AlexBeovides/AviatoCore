@@ -2,6 +2,8 @@ using AviatoCore.Infrastructure;
 using AviatoCore.Application.Interfaces;
 using AviatoCore.Application.Services;
 using Microsoft.EntityFrameworkCore;
+using AviatoCore.Domain.Interfaces;
+using AviatoCore.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,9 @@ builder.Services.AddCors(options => {
                            .AllowAnyHeader());
 });
 
-builder.Services.AddScoped<IClientService, ClientService>();
+//builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IAirportService, AirportService>();
+builder.Services.AddScoped<IAirportRepository, AirportRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
