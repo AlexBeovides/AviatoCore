@@ -1,5 +1,6 @@
 ﻿using AviatoCore.Application.Interfaces;
 using AviatoCore.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ public class AirportsController : ControllerBase
     }
 
     // PUT: api/Airports/5
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutAirport(int id, Airport airport)
     {
@@ -51,6 +53,7 @@ public class AirportsController : ControllerBase
     }
 
     // POST: api/Airports
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<Airport>> PostAirport(Airport airport)
     {
@@ -60,6 +63,7 @@ public class AirportsController : ControllerBase
     }
 
     // DELETE: api/Airports/5
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAirport(int id)
     {

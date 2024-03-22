@@ -4,6 +4,7 @@ using AviatoCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AviatoCore.Infrastructure.Migrations
 {
     [DbContext(typeof(AviatoDbContext))]
-    partial class AviatoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319003422_ModifyUser")]
+    partial class ModifyUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,31 +94,6 @@ namespace AviatoCore.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AviatoCore.Domain.Entities.Client", b =>
-                {
-                    b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ClientTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClientId");
-
-                    b.HasIndex("ClientTypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Clients");
-                });
-
             modelBuilder.Entity("AviatoCore.Domain.Entities.ClientType", b =>
                 {
                     b.Property<int>("Id")
@@ -187,6 +165,10 @@ namespace AviatoCore.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -220,28 +202,9 @@ namespace AviatoCore.Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
-                });
+                    b.ToTable("Users", (string)null);
 
-            modelBuilder.Entity("AviatoCore.Domain.Entities.Worker", b =>
-                {
-                    b.Property<string>("WorkerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AirportId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("WorkerId");
-
-                    b.HasIndex("AirportId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Workers");
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -412,40 +375,30 @@ namespace AviatoCore.Infrastructure.Migrations
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.Client", b =>
                 {
-                    b.HasOne("AviatoCore.Domain.Entities.ClientType", "ClientType")
-                        .WithMany()
-                        .HasForeignKey("ClientTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("AviatoCore.Domain.Entities.User");
 
-                    b.HasOne("AviatoCore.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("ClientTypeId")
+                        .HasColumnType("int");
 
-                    b.Navigation("ClientType");
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Navigation("User");
+                    b.HasIndex("ClientTypeId");
+
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.Worker", b =>
                 {
-                    b.HasOne("AviatoCore.Domain.Entities.Airport", "Airport")
-                        .WithMany()
-                        .HasForeignKey("AirportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("AviatoCore.Domain.Entities.User");
 
-                    b.HasOne("AviatoCore.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("AirportId")
+                        .HasColumnType("int");
 
-                    b.Navigation("Airport");
+                    b.HasIndex("AirportId");
 
-                    b.Navigation("User");
+                    b.ToTable("Workers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -497,6 +450,40 @@ namespace AviatoCore.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Client", b =>
+                {
+                    b.HasOne("AviatoCore.Domain.Entities.ClientType", "ClientType")
+                        .WithMany()
+                        .HasForeignKey("ClientTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AviatoCore.Domain.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("AviatoCore.Domain.Entities.Client", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClientType");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Worker", b =>
+                {
+                    b.HasOne("AviatoCore.Domain.Entities.Airport", "Airport")
+                        .WithMany()
+                        .HasForeignKey("AirportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AviatoCore.Domain.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("AviatoCore.Domain.Entities.Worker", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airport");
                 });
 #pragma warning restore 612, 618
         }
