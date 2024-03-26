@@ -24,7 +24,8 @@ builder.Services.AddDefaultIdentity<User>(options =>{})
 // Add CORS services.
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowMyClient",
-        builder => builder.WithOrigins("http://localhost:5173") // replace with your React app's address
+        builder => builder.WithOrigins("http://localhost:5173",
+                                        "http://192.168.76.25:5173") // replace with your React app's address
                            .AllowAnyMethod()
                            .AllowAnyHeader());
 });

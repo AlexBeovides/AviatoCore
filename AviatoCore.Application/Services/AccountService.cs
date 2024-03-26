@@ -1,4 +1,5 @@
-﻿using AviatoCore.Application.Interfaces;
+﻿using AviatoCore.Application.DTOs;
+using AviatoCore.Application.Interfaces;
 using AviatoCore.Domain.Entities;
 using AviatoCore.Infrastructure;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -30,37 +31,16 @@ namespace AviatoCore.Application.Services
             _context = context;
         }
 
-        public async Task<IdentityResult> Register(string email, string password, string name, string surname, string country)
+        public async Task<IdentityResult> Register(RegisterDto registerDto)
         {
             var user = new User
             {
-                UserName = email,
-                Name = name,
-                Surname = surname
+                UserName = registerDto.Email,
+                Name = registerDto.Name,
+                Surname = registerDto.Surname
             };
 
-            var admin = new User
-            {
-                UserName = "admin@admin.com",
-                Name = "admin",
-                Surname = "admin"
-            };
-
-            var rresult = await _userManager.CreateAsync(admin, "Admin_77");
-            if (rresult.Succeeded)
-            {
-                var roleResult = await _userManager.AddToRoleAsync(admin, "Admin");
-                if (!roleResult.Succeeded)
-                {
-                    return IdentityResult.Failed(roleResult.Errors.ToArray());
-                }
-            }
-            else
-            {
-                return IdentityResult.Failed(rresult.Errors.ToArray());
-            }
-
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (result.Succeeded)
             {
@@ -74,7 +54,7 @@ namespace AviatoCore.Application.Services
                 {
                     ClientId = user.Id,
                     UserId = user.Id,
-                    Country = country,
+                    Country = registerDto.Country,
                     ClientTypeId = 1
                 };
 
@@ -84,32 +64,33 @@ namespace AviatoCore.Application.Services
 
             return result;
         }
-        public async Task<IdentityResult> AddWorker(string email, string password, string name, string surname, string role, int airportId)
+
+        public async Task<IdentityResult> AddWorker(WorkerDto workerDto)
         {
             var user = new User
             {
-                UserName = email,
-                Name = name,
-                Surname = surname
+                UserName = workerDto.Email,
+                Name = workerDto.Name,
+                Surname = workerDto.Surname
             };
 
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, workerDto.Password);
 
             if (result.Succeeded)
             {
-                var roleResult = await _userManager.AddToRoleAsync(user, role);
+                var roleResult = await _userManager.AddToRoleAsync(user, workerDto.Role);
                 if (!roleResult.Succeeded)
                 {
                     return IdentityResult.Failed(roleResult.Errors.ToArray());
                 }
 
-                if(role != "Admin")
+                if (workerDto.Role != "Admin")
                 {
                     var worker = new Worker
                     {
                         WorkerId = user.Id,
                         UserId = user.Id,
-                        AirportId = airportId
+                        AirportId = workerDto.AirportId
                     };
 
                     _context.Workers.Add(worker);
@@ -119,6 +100,7 @@ namespace AviatoCore.Application.Services
 
             return result;
         }
+
         private async Task<string> GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -137,17 +119,25 @@ namespace AviatoCore.Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<string> Login(string username, string password)
+        public async Task<LoginResult> Login(LoginDto loginDto)
         {
-            var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
+            var result = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(username);
-                return await GenerateJwtToken(user);
+                var user = await _userManager.FindByNameAsync(loginDto.Email);
+                var roles = await _userManager.GetRolesAsync(user);
+                var token = await GenerateJwtToken(user);
+
+                return new LoginResult
+                {
+                    Token = token,
+                    UserName= user.Name,
+                    Role = roles[0]
+                };
             }
 
-            return string.Empty;
+            return null;
         }
     }
 }

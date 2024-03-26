@@ -31,9 +31,9 @@ namespace AviatoCore.Web.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string password, string name, string surname, string country)
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            var result = await _accountService.Register(email, password, name, surname, country);
+            var result = await _accountService.Register(registerDto);
 
             if (result.Succeeded)
             {
@@ -46,9 +46,9 @@ namespace AviatoCore.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("add-worker")]
-        public async Task<IActionResult> AddWorker(string email, string password, string name, string surname, string role, int airportId)
+        public async Task<IActionResult> AddWorker(WorkerDto workerDto)
         {
-            var result = await _accountService.AddWorker(email, password, name, surname, role, airportId);
+            var result = await _accountService.AddWorker(workerDto);
 
             if (result.Succeeded)
             {
@@ -61,13 +61,13 @@ namespace AviatoCore.Web.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
-            var token = await _accountService.Login(username, password);
+            var loginResult = await _accountService.Login(loginDto);
 
-            if (token != null)
+            if (loginResult != null)
             {
-                return Ok(new { Token = token });
+                return Ok(new { Token = loginResult.Token, userName=loginResult.UserName, Role = loginResult.Role });
             }
 
             return Unauthorized();
