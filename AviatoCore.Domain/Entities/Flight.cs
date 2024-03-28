@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AviatoCore.Domain.Entities
+{
+    public class Flight
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public DateTime ArrivalTime { get; set; }
+        public DateTime DepartureTime { get; set; }
+        public int AirportId { get; set; }
+        public Airport Airport { get; set; }
+        public int PlaneId { get; set; }
+        public Plane Plane { get; set; }
+        public int OwnerRoleId { get; set; }
+        public OwnerRole OwnerRole { get; set; }
+    }
+
+    public class OwnerRole
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}

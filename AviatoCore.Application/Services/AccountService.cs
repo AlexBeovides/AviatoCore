@@ -132,7 +132,6 @@ namespace AviatoCore.Application.Services
                 return new LoginResult
                 {
                     Token = token,
-                    UserName= user.Name,
                     Role = roles[0]
                 };
             }

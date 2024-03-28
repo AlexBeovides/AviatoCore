@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AviatoDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<User>(options =>{})
+builder.Services.AddDefaultIdentity<User>(options => { })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AviatoDbContext>();
 

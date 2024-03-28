@@ -21,14 +21,33 @@ namespace AviatoCore.Infrastructure
         public DbSet<Worker> Workers { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientType> ClientTypes { get; set; }
+        public DbSet<Plane> Planes { get; set; }
+        public DbSet<Facility> Facilities { get; set; }
+        public DbSet<FacilityType> FacilityTypes { get; set; }
+        public DbSet<Service> Services { get; set; }
+        public DbSet<ClientService> ClientServices { get; set; }
+        public DbSet<Flight> Flights { get; set; }
+        public DbSet<OwnerRole> OwnersRole { get; set; }
+        public DbSet<Repair> Repairs { get; set; }
+        public DbSet<RepairType> RepairTypes { get; set; }
+        public DbSet<FlightRepair> FlightRepairs { get; set; }
+        public DbSet<FlightService> FlightServices { get; set; }
+        public DbSet<RepairDependency> RepairDependencies { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        public DbSet<PlaneCondition> PlaneConditions { get; set; }
+
 
         // Add other DbSets for your other entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Don't forget to call base method
-
+            
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => x.UserId);
+
+            modelBuilder.Entity<RepairDependency>()
+           .HasKey(r => new { r.PlaneConditionId, r.RepairAId, r.RepairBId });
+
 
             modelBuilder.Entity<Airport>().HasData(
                 new Airport { Id = 1, Name = "José Martí", Address = "Avenida Van Troy y Final, Rancho Boyeros, Havana, Cuba", Latitude = 22.9892, Longitude = -82.4092 },
@@ -52,7 +71,6 @@ namespace AviatoCore.Infrastructure
                new ClientType { Id = 2, Name = "VIP"},
                new ClientType { Id = 3, Name = "Company"}
            );
-
            
         }
     }

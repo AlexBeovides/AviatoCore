@@ -16,7 +16,7 @@ public class AirportsController : ControllerBase
         _airportService = airportService;
     }
 
-    // GET: api/Airports
+    // GET: api/Airports 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Airport>>> GetAirports()
     {

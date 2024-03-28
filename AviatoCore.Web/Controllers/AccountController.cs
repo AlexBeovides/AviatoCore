@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RTools_NTS.Util;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -67,7 +68,7 @@ namespace AviatoCore.Web.Controllers
 
             if (loginResult != null)
             {
-                return Ok(new { Token = loginResult.Token, userName=loginResult.UserName, Role = loginResult.Role });
+                return Ok(new { Token = loginResult.Token, Role = loginResult.Role });
             }
 
             return Unauthorized();
