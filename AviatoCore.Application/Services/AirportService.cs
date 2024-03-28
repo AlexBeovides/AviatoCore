@@ -11,38 +11,38 @@ using System.Threading.Tasks;
 
 namespace AviatoCore.Application.Services
 {
-    public class AirportService : IAirportService
+    public class PlaneService : IPlaneService
     {
-        private readonly IAirportRepository _airportRepository;
+        private readonly IPlaneRepository _planeRepository;
 
-        public AirportService(IAirportRepository airportRepository)
+        public PlaneService(IPlaneRepository planeRepository)
         {
-            _airportRepository = airportRepository;
+            _planeRepository = planeRepository;
         }
 
-        public async Task<Airport> GetAirportAsync(int id)
+        public async Task<Plane> GetPlaneAsync(int id)
         {
-            return await _airportRepository.GetAirportAsync(id);
+            return await _planeRepository.GetPlaneAsync(id);
         }
 
-        public async Task<IEnumerable<Airport>> GetAllAirportsAsync()
+        public async Task<IEnumerable<Plane>> GetAllPlanesAsync()
         {
-            return await _airportRepository.GetAllAirportsAsync();
+            return await _planeRepository.GetAllPlanesAsync();
         }
 
-        public async Task AddAirportAsync(Airport airport)
+        public async Task AddPlaneAsync(Plane plane)
         {
-            await _airportRepository.AddAirportAsync(airport);
+            await _planeRepository.AddPlaneAsync(plane);
         }
 
-        public async Task UpdateAirportAsync(Airport airport)
+        public async Task UpdatePlaneAsync(Plane plane)
         {
-            await _airportRepository.UpdateAirportAsync(airport);
+            await _planeRepository.UpdatePlaneAsync(plane);
         }
 
-        public async Task DeleteAirportAsync(int id)
+        public async Task DeletePlaneAsync(int id)
         {
-            await _airportRepository.DeleteAirportAsync(id);
+            await _planeRepository.DeletePlaneAsync(id);
         }
     }
 }
