@@ -2,6 +2,7 @@
 using AviatoCore.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace AviatoCore.Infrastructure.Repositories
@@ -17,11 +18,13 @@ namespace AviatoCore.Infrastructure.Repositories
 
         public async Task<Plane> GetPlaneAsync(int id)
         {
-            var plane = await _context.Set<Plane>().FindAsync(id);
+            var plane = await _context.Planes.FirstOrDefaultAsync(p => p.Id == id);
+            
             if (plane == null)
             {
                 throw new KeyNotFoundException("Plane not found");
             }
+
             return plane;
         }
 
@@ -45,7 +48,7 @@ namespace AviatoCore.Infrastructure.Repositories
         public async Task DeletePlaneAsync(int id)
         {
             var plane = await GetPlaneAsync(id);
-            _context.Set<Plane>().Remove(plane);
+            plane.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
     }

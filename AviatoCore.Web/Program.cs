@@ -42,9 +42,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             };
         });
 
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAirportService, AirportService>();
 builder.Services.AddScoped<IAirportRepository, AirportRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IPlaneService, PlaneService>();
+builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

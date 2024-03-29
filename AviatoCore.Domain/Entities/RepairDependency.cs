@@ -10,6 +10,7 @@ namespace AviatoCore.Domain.Entities
 {
     public class RepairDependency
     {
+   
         public int PlaneConditionId { get; set; }
         public PlaneCondition PlaneCondition { get; set; }
         public int RepairAId { get; set; }
@@ -23,5 +24,6 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<RepairDependency> RepairDependencies { get; set; }
     }
 }

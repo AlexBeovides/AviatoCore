@@ -16,11 +16,15 @@ namespace AviatoCore.Domain.Entities
         public int ClientTypeId { get; set; }
         public User User { get; set; } // Navigation property
         public ClientType ClientType { get; set; }
+        public ICollection<Plane> Planes { get; set; }
+        public ICollection<ClientService> ClientServices { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 
     public class ClientType
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<Client> Clients { get; set; }
     }
 }

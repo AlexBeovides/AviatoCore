@@ -20,6 +20,9 @@ namespace AviatoCore.Domain.Entities
         public Airport Airport { get; set; }
         public int FacilityTypeId { get; set; }
         public FacilityType FacilityType { get; set; }
+        public ICollection<Service> Services { get; set; }
+        public bool IsDeleted { get; set; }
+
     }
     public class FacilityType
     {
@@ -27,5 +30,6 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<Facility> Facilities { get; set; }
     }
 }

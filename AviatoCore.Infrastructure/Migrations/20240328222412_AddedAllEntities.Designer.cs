@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AviatoCore.Infrastructure.Migrations
 {
     [DbContext(typeof(AviatoDbContext))]
-    [Migration("20240328112244_AddedAllEntities")]
+    [Migration("20240328222412_AddedAllEntities")]
     partial class AddedAllEntities
     {
         /// <inheritdoc />
@@ -213,6 +213,71 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("FacilityTypeId");
 
                     b.ToTable("Facilities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Street 15, 14077",
+                            AirportId = 1,
+                            FacilityTypeId = 1,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp",
+                            Name = "Breadway"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Street 20, 23078",
+                            AirportId = 1,
+                            FacilityTypeId = 2,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg",
+                            Name = "AMXWorkshop"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Street 5, 66778",
+                            AirportId = 1,
+                            FacilityTypeId = 3,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg",
+                            Name = "Tascon"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Street 1, 45556",
+                            AirportId = 1,
+                            FacilityTypeId = 4,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg",
+                            Name = "ArtesaniaDominicana"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Street 20, 23078",
+                            AirportId = 1,
+                            FacilityTypeId = 5,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg",
+                            Name = "CambioExchange"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "Street 7, 12078",
+                            AirportId = 2,
+                            FacilityTypeId = 6,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg",
+                            Name = "Ryu"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Address = "Street 1, 16078",
+                            AirportId = 2,
+                            FacilityTypeId = 7,
+                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg",
+                            Name = "Tagliatella"
+                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.FacilityType", b =>
@@ -230,6 +295,43 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FacilityTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Cafeteria"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Workshop"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Clothing Store"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Gift Shop"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Currency exchange office"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Sushi Bar"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Restaurant"
+                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.Flight", b =>
@@ -374,6 +476,53 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Planes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CargoCapacity = 20000.0,
+                            Classification = "Commercial",
+                            CrewCount = 5,
+                            OwnerId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd",
+                            PassengerCapacity = 200
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CargoCapacity = 5000.0,
+                            Classification = "Private",
+                            CrewCount = 2,
+                            OwnerId = "8e03cd57-c768-4a44-b174-45a450441b44",
+                            PassengerCapacity = 10
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CargoCapacity = 50000.0,
+                            Classification = "Cargo",
+                            CrewCount = 5,
+                            OwnerId = "029eaca6-cb0f-408b-b6c4-c51cea6e5441",
+                            PassengerCapacity = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CargoCapacity = 15000.0,
+                            Classification = "Military",
+                            CrewCount = 10,
+                            OwnerId = "029eaca6-cb0f-408b-b6c4-c51cea6e5441",
+                            PassengerCapacity = 50
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CargoCapacity = 25000.0,
+                            Classification = "Commercial",
+                            CrewCount = 6,
+                            OwnerId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd",
+                            PassengerCapacity = 250
+                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.PlaneCondition", b =>
@@ -775,13 +924,13 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Client", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.ClientType", "ClientType")
-                        .WithMany()
+                        .WithMany("Clients")
                         .HasForeignKey("ClientTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Clients")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -794,13 +943,13 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.ClientService", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Client", "Client")
-                        .WithMany()
+                        .WithMany("ClientServices")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Service", "Service")
-                        .WithMany()
+                        .WithMany("ClientServices")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -813,13 +962,13 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Facility", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Airport", "Airport")
-                        .WithMany()
+                        .WithMany("Facilities")
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.FacilityType", "FacilityType")
-                        .WithMany()
+                        .WithMany("Facilities")
                         .HasForeignKey("FacilityTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -832,19 +981,19 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Flight", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Airport", "Airport")
-                        .WithMany()
+                        .WithMany("Flights")
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.OwnerRole", "OwnerRole")
-                        .WithMany()
+                        .WithMany("Flights")
                         .HasForeignKey("OwnerRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Plane", "Plane")
-                        .WithMany()
+                        .WithMany("Flights")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -859,15 +1008,15 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.FlightRepair", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Flight", "Flight")
-                        .WithMany()
+                        .WithMany("FlightRepairs")
                         .HasForeignKey("FlightId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Repair", "Repair")
-                        .WithMany()
+                        .WithMany("FlightRepairs")
                         .HasForeignKey("RepairId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Flight");
@@ -878,15 +1027,15 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.FlightService", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Flight", "Flight")
-                        .WithMany()
+                        .WithMany("FlightServices")
                         .HasForeignKey("FlightId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Service", "Service")
-                        .WithMany()
+                        .WithMany("FlightServices")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Flight");
@@ -897,7 +1046,7 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Plane", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Client", "Owner")
-                        .WithMany()
+                        .WithMany("Planes")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -908,13 +1057,13 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Repair", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.RepairType", "RepairType")
-                        .WithMany()
+                        .WithMany("Repairs")
                         .HasForeignKey("RepairTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Service", "Service")
-                        .WithMany()
+                        .WithMany("Repairs")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -927,21 +1076,21 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.RepairDependency", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.PlaneCondition", "PlaneCondition")
-                        .WithMany()
+                        .WithMany("RepairDependencies")
                         .HasForeignKey("PlaneConditionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Repair", "RepairA")
-                        .WithMany()
+                        .WithMany("RepairADependencies")
                         .HasForeignKey("RepairAId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Repair", "RepairB")
-                        .WithMany()
+                        .WithMany("RepairBDependencies")
                         .HasForeignKey("RepairBId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("PlaneCondition");
@@ -954,13 +1103,13 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Review", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Client", "Client")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.Service", "Service")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -973,7 +1122,7 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Service", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Facility", "Facility")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("FacilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -984,13 +1133,13 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Worker", b =>
                 {
                     b.HasOne("AviatoCore.Domain.Entities.Airport", "Airport")
-                        .WithMany()
+                        .WithMany("Workers")
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AviatoCore.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Workers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1049,6 +1198,93 @@ namespace AviatoCore.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Airport", b =>
+                {
+                    b.Navigation("Facilities");
+
+                    b.Navigation("Flights");
+
+                    b.Navigation("Workers");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Client", b =>
+                {
+                    b.Navigation("ClientServices");
+
+                    b.Navigation("Planes");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.ClientType", b =>
+                {
+                    b.Navigation("Clients");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Facility", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.FacilityType", b =>
+                {
+                    b.Navigation("Facilities");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Flight", b =>
+                {
+                    b.Navigation("FlightRepairs");
+
+                    b.Navigation("FlightServices");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.OwnerRole", b =>
+                {
+                    b.Navigation("Flights");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Plane", b =>
+                {
+                    b.Navigation("Flights");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.PlaneCondition", b =>
+                {
+                    b.Navigation("RepairDependencies");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Repair", b =>
+                {
+                    b.Navigation("FlightRepairs");
+
+                    b.Navigation("RepairADependencies");
+
+                    b.Navigation("RepairBDependencies");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.RepairType", b =>
+                {
+                    b.Navigation("Repairs");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.Service", b =>
+                {
+                    b.Navigation("ClientServices");
+
+                    b.Navigation("FlightServices");
+
+                    b.Navigation("Repairs");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("AviatoCore.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Clients");
+
+                    b.Navigation("Workers");
                 });
 #pragma warning restore 612, 618
         }

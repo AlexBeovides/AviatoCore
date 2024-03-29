@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AviatoCore.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -216,14 +218,12 @@ namespace AviatoCore.Infrastructure.Migrations
                         name: "FK_FlightServices_Flights_FlightId",
                         column: x => x.FlightId,
                         principalTable: "Flights",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_FlightServices_Services_ServiceId",
                         column: x => x.ServiceId,
                         principalTable: "Services",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -300,14 +300,12 @@ namespace AviatoCore.Infrastructure.Migrations
                         name: "FK_FlightRepairs_Flights_FlightId",
                         column: x => x.FlightId,
                         principalTable: "Flights",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_FlightRepairs_Repairs_RepairId",
                         column: x => x.RepairId,
                         principalTable: "Repairs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -331,14 +329,52 @@ namespace AviatoCore.Infrastructure.Migrations
                         name: "FK_RepairDependencies_Repairs_RepairAId",
                         column: x => x.RepairAId,
                         principalTable: "Repairs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_RepairDependencies_Repairs_RepairBId",
                         column: x => x.RepairBId,
                         principalTable: "Repairs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "FacilityTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Cafeteria" },
+                    { 2, "Workshop" },
+                    { 3, "Clothing Store" },
+                    { 4, "Gift Shop" },
+                    { 5, "Currency exchange office" },
+                    { 6, "Sushi Bar" },
+                    { 7, "Restaurant" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Planes",
+                columns: new[] { "Id", "CargoCapacity", "Classification", "CrewCount", "OwnerId", "PassengerCapacity" },
+                values: new object[,]
+                {
+                    { 1, 20000.0, "Commercial", 5, "684c656f-0424-4c06-9a2e-92bac4f3d9bd", 200 },
+                    { 2, 5000.0, "Private", 2, "8e03cd57-c768-4a44-b174-45a450441b44", 10 },
+                    { 3, 50000.0, "Cargo", 5, "029eaca6-cb0f-408b-b6c4-c51cea6e5441", 0 },
+                    { 4, 15000.0, "Military", 10, "029eaca6-cb0f-408b-b6c4-c51cea6e5441", 50 },
+                    { 5, 25000.0, "Commercial", 6, "684c656f-0424-4c06-9a2e-92bac4f3d9bd", 250 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Facilities",
+                columns: new[] { "Id", "Address", "AirportId", "FacilityTypeId", "ImgUrl", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Street 15, 14077", 1, 1, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", "Breadway" },
+                    { 2, "Street 20, 23078", 1, 2, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", "AMXWorkshop" },
+                    { 3, "Street 5, 66778", 1, 3, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg", "Tascon" },
+                    { 4, "Street 1, 45556", 1, 4, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg", "ArtesaniaDominicana" },
+                    { 5, "Street 20, 23078", 1, 5, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg", "CambioExchange" },
+                    { 6, "Street 7, 12078", 2, 6, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg", "Ryu" },
+                    { 7, "Street 1, 16078", 2, 7, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", "Tagliatella" }
                 });
 
             migrationBuilder.CreateIndex(

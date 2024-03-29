@@ -21,6 +21,10 @@ namespace AviatoCore.Domain.Entities
         public Plane Plane { get; set; }
         public int OwnerRoleId { get; set; }
         public OwnerRole OwnerRole { get; set; }
+        public ICollection<FlightService>? FlightServices { get; set; }
+        public ICollection<FlightRepair>? FlightRepairs { get; set; }
+        public bool IsDeleted { get; set; }
+
     }
 
     public class OwnerRole
@@ -29,5 +33,6 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public ICollection<Flight> Flights { get; set; }
     }
 }

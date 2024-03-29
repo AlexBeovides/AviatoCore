@@ -17,7 +17,8 @@ namespace AviatoCore.Infrastructure.Repositories
 
         public async Task<Airport> GetAirportAsync(int id)
         {
-            var airport = await _context.Set<Airport>().FindAsync(id);
+            var airport = await _context.Airports.FirstOrDefaultAsync(p => p.Id == id);
+
             if (airport == null)
             {
                 throw new KeyNotFoundException("Airport not found");
@@ -45,7 +46,7 @@ namespace AviatoCore.Infrastructure.Repositories
         public async Task DeleteAirportAsync(int id)
         {
             var airport = await GetAirportAsync(id);
-            _context.Set<Airport>().Remove(airport);
+            airport.IsDeleted = true;
             await _context.SaveChangesAsync();
         }
     }

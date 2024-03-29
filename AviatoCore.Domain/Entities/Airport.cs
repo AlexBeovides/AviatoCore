@@ -16,7 +16,10 @@ namespace AviatoCore.Domain.Entities
         public string Name { get; set; }
         public string Address { get; set; }
         public double Latitude { get; set; }            // position latitude
-        public double Longitude { get; set; }           // position latitude
-         // Other properties related to the airport
+        public double Longitude { get; set; }           // position latitude                                              
+        public ICollection<Facility>? Facilities { get; set; }
+        public ICollection<Worker>? Workers { get; set; }
+        public ICollection<Flight>? Flights { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
