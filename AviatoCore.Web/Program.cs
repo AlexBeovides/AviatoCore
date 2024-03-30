@@ -25,9 +25,9 @@ builder.Services.AddDefaultIdentity<User>(options => { })
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowMyClient",
         builder => builder.WithOrigins("http://localhost:5173",
-                                        "http://192.168.76.25:5173") // replace with your React app's address
-                           .AllowAnyMethod()
-                           .AllowAnyHeader());
+            "http://192.168.76.25:5173")  
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -45,6 +45,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAirportService, AirportService>();
 builder.Services.AddScoped<IAirportRepository, AirportRepository>();
+builder.Services.AddScoped<IFacilityService, FacilityService>();
+builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
 builder.Services.AddScoped<IPlaneService, PlaneService>();
 builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
 

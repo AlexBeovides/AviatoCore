@@ -17,10 +17,10 @@ namespace AviatoCore.Domain.Entities
         public string Address { get; set; }
         public string ImgUrl { get; set; }
         public int AirportId { get; set; }
-        public Airport Airport { get; set; }
+        public Airport? Airport { get; set; }
         public int FacilityTypeId { get; set; }
-        public FacilityType FacilityType { get; set; }
-        public ICollection<Service> Services { get; set; }
+        public FacilityType? FacilityType { get; set; }
+        public ICollection<Service>? Services { get; set; }
         public bool IsDeleted { get; set; }
 
     }
