@@ -51,6 +51,9 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IPlaneService, PlaneService>();
 builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

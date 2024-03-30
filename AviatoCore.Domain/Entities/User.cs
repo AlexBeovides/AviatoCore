@@ -12,8 +12,8 @@ namespace AviatoCore.Domain.Entities
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public ICollection<Client>? Clients { get; set; }
-        public ICollection<Worker>? Workers { get; set; }
+        public Client? Client { get; set; }
+        public Worker? Worker { get; set; }
         public bool IsDeleted { get; set; }
 
     }

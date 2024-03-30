@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AviatoCore.Domain.Entities
 {
-    public class ClientService
+    public class ClientServices
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

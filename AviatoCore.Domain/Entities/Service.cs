@@ -18,7 +18,7 @@ namespace AviatoCore.Domain.Entities
         public int FacilityId { get; set; }
         public Facility? Facility { get; set; }
         public ICollection<FlightService>? FlightServices { get; set; }
-        public ICollection<ClientService>? ClientServices{ get; set; }
+        public ICollection<ClientServices>? ClientServices{ get; set; }
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<Repair>? Repairs { get; set; }
         public bool IsDeleted { get; set; }

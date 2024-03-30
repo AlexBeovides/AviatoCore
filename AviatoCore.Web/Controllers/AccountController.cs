@@ -23,7 +23,6 @@ namespace AviatoCore.Web.Controllers
         private readonly AviatoDbContext _context;
         private readonly IAccountService _accountService;
     
-
         public AccountController(AviatoDbContext context, IAccountService accountService, 
             UserManager<User> userManager, SignInManager<User> signInManager)
         {
