@@ -124,6 +124,31 @@ namespace AviatoCore.Infrastructure
                    new Facility { Id = 7, Name = "Tagliatella", Address = "Street 1, 16078", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", AirportId = 2, FacilityTypeId = 7 }
            );
 
+            modelBuilder.Entity<Service>().HasData(
+                // Breadway - Cafeteria (FacilityId = 1)
+                new Service { Id = 1, Name = "Gourmet Coffee Blend", Price = 2.99, FacilityId = 1, IsDeleted = false },
+                new Service { Id = 2, Name = "Freshly Baked Pastries", Price = 3.49, FacilityId = 1, IsDeleted = false },
+                // AMXWorkshop - Hangar (FacilityId = 2)
+                new Service { Id = 3, Name = "Aircraft Engine Tune-Up", Price = 499.99, FacilityId = 2, IsDeleted = false },
+                new Service { Id = 4, Name = "Avionic Systems Check", Price = 299.99, FacilityId = 2, IsDeleted = false },
+                // Tascon - Clothing Store (FacilityId = 3)
+                new Service { Id = 5, Name = "Tailored Pilot Uniforms", Price = 199.99, FacilityId = 3, IsDeleted = false },
+                new Service { Id = 6, Name = "Flight Jackets Collection", Price = 149.99, FacilityId = 3, IsDeleted = false },
+                // ArtesaniaDominicana - Gift Shop (FacilityId = 4)
+                new Service { Id = 7, Name = "Handcrafted Model Aircraft", Price = 59.99, FacilityId = 4, IsDeleted = false },
+                new Service { Id = 8, Name = "Aviation Memorabilia", Price = 39.99, FacilityId = 4, IsDeleted = false },
+                // CambioExchange - Currency Exchange Office (FacilityId = 5)
+                new Service { Id = 9, Name = "Foreign Currency Conversion", Price = 0.99, FacilityId = 5, IsDeleted = false },
+                new Service { Id = 10, Name = "Traveler's Cheque Issuance", Price = 1.99, FacilityId = 5, IsDeleted = false },
+                // Ryu - Sushi Bar (FacilityId = 6)
+                new Service { Id = 11, Name = "Sashimi Selection", Price = 18.99, FacilityId = 6, IsDeleted = false },
+                new Service { Id = 12, Name = "Signature Sushi Rolls", Price = 15.99, FacilityId = 6, IsDeleted = false },
+                // Tagliatella - Restaurant (FacilityId = 7)
+                new Service { Id = 13, Name = "Authentic Italian Pasta Selection", Price = 12.99, FacilityId = 7, IsDeleted = false },
+                new Service { Id = 14, Name = "Gourmet Pizza Delivery Service", Price = 15.99, FacilityId = 7, IsDeleted = false }
+            );
+
+
             modelBuilder.Entity<Plane>().HasData(
                 new Plane
                 {

@@ -47,6 +47,8 @@ builder.Services.AddScoped<IAirportService, AirportService>();
 builder.Services.AddScoped<IAirportRepository, AirportRepository>();
 builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IPlaneService, PlaneService>();
 builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
 
