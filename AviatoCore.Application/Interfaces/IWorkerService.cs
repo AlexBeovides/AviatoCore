@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AviatoCore.Application.Interfaces
 {
-    public interface IClientService
+    public interface IWorkerService
     {
-        Task<ClientDto> GetClientAsync(string id);
-        Task<IEnumerable<ClientDto>> GetAllClientsAsync();
-        Task<IdentityResult> AddClientAsync(ClientDto airport);
-        Task UpdateClientAsync(ClientDto airport);
-        Task DeleteClientAsync(string id);
+        Task<WorkerDto> GetWorkerAsync(string id);
+        Task<IEnumerable<WorkerDto>> GetAllWorkersAsync();
+        Task<IdentityResult> AddWorkerAsync(WorkerDto workerDto);
+        Task UpdateWorkerAsync(WorkerDto workerDto);
+        Task DeleteWorkerAsync(string id);
     }
 }

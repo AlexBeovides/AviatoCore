@@ -14,7 +14,7 @@ namespace AviatoCore.Application.DTOs
         public string Surname { get; set; }
         public string Country { get; set; }
         public int ClientTypeId { get; set; }
-        public bool isDeleted { get; set; }
+        public bool IsDeleted { get; set; }
         public string Password { get; set; }
     }
 }

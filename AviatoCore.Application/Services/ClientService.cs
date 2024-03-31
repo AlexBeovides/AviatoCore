@@ -4,6 +4,7 @@ using AviatoCore.Domain.Entities;
 using AviatoCore.Domain.Interfaces;
 using AviatoCore.Infrastructure;
 using AviatoCore.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,15 @@ namespace AviatoCore.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IClientRepository _clientRepository;
+        private readonly UserManager<User> _userManager;
 
         public ClientService(IUserRepository userRepository,
-            IClientRepository clientRepository)
+            IClientRepository clientRepository,
+            UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _clientRepository = clientRepository;
+            _userManager = userManager;
         }
 
         public async Task<ClientDto> GetClientAsync(string id)
@@ -32,13 +36,13 @@ namespace AviatoCore.Application.Services
 
             return new ClientDto
             {
-                 Id = user.Id,
-                 Email = user.UserName,
-                 Name = user.Name,
-                 Surname = user.Surname,
-                 Country = client.Country,
-                 ClientTypeId = client.ClientTypeId,
-                 isDeleted = user.IsDeleted
+                Id = user.Id,
+                Email = user.UserName,
+                Name = user.Name,
+                Surname = user.Surname,
+                Country = client.Country,
+                ClientTypeId = client.ClientTypeId,
+                IsDeleted = user.IsDeleted
             };
         }
 
@@ -48,7 +52,7 @@ namespace AviatoCore.Application.Services
 
             // Count the number of users who are clients
             int clientCount = users.Count(user => user.Client != null);
-           
+
             return users
                 .Where(user => user.Client != null) // Only consider users who are clients
                 .Select(user => new ClientDto
@@ -59,12 +63,12 @@ namespace AviatoCore.Application.Services
                     Surname = user.Surname,
                     Country = user.Client.Country,
                     ClientTypeId = user.Client.ClientTypeId,
-                    isDeleted = user.IsDeleted
+                    IsDeleted = user.IsDeleted
                 })
                 .ToList();
         }
 
-        public async Task AddClientAsync(ClientDto clientDto)
+        public async Task<IdentityResult> AddClientAsync(ClientDto clientDto)
         {
             var user = new User
             {
@@ -78,7 +82,12 @@ namespace AviatoCore.Application.Services
 
             if (result.Succeeded)
             {
-         
+                var roleResult = await _userManager.AddToRoleAsync(user, "Client");
+                if (!roleResult.Succeeded)
+                {
+                    return IdentityResult.Failed(roleResult.Errors.ToArray());
+                }
+
                 var client = new Client
                 {
                     ClientId = user.Id,
@@ -88,6 +97,7 @@ namespace AviatoCore.Application.Services
                 };
 
                 await _clientRepository.AddClientAsync(client);
+                return IdentityResult.Success;
             }
             else
             {
@@ -105,7 +115,7 @@ namespace AviatoCore.Application.Services
             user.UserName = clientDto.Email;
             user.Name = clientDto.Name;
             user.Surname = clientDto.Surname;
-            user.IsDeleted = clientDto.isDeleted;
+            user.IsDeleted = clientDto.IsDeleted;
 
             client.Country = clientDto.Country;
             client.ClientTypeId = clientDto.ClientTypeId;

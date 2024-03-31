@@ -35,15 +35,6 @@ namespace AviatoCore.Infrastructure.Repositories
         {
             var result = await _userManager.CreateAsync(user, password);
 
-            if (result.Succeeded)
-            {
-                var roleResult = await _userManager.AddToRoleAsync(user, "Client");
-                if (!roleResult.Succeeded)
-                {
-                    return IdentityResult.Failed(roleResult.Errors.ToArray());
-                }
-            }
-
             return result;
         }
 
