@@ -1,4 +1,5 @@
-﻿using AviatoCore.Application.Interfaces;
+﻿using AviatoCore.Application.DTOs;
+using AviatoCore.Application.Interfaces;
 using AviatoCore.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,24 +11,28 @@ using System.Threading.Tasks;
 public class ServicesController : ControllerBase
 {
     private readonly IServiceService _serviceService;
+    private readonly IFacilityService _facilityService;
 
-    public ServicesController(IServiceService serviceService)
+    public ServicesController(IServiceService serviceService,
+        IFacilityService facilityService)
     {
         _serviceService = serviceService;
+        _facilityService = facilityService;
     }
 
     // GET: api/Services 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Service>>> GetServices()
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetServices([FromQuery] int airportId)
     {
-        return Ok(await _serviceService.GetAllServicesAsync());
+        var services = await _serviceService.GetAllServicesAsync(airportId);
+        return Ok(services);
     }
 
     // GET: api/Services/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Service>> GetService(int id)
+    public async Task<ActionResult<Service>> GetService(int id, [FromQuery] int airportId)
     {
-        var service = await _serviceService.GetServiceAsync(id);
+        var service = await _serviceService.GetServiceAsync(id, airportId);
 
         if (service == null)
         {
@@ -38,35 +43,52 @@ public class ServicesController : ControllerBase
     }
 
     // PUT: api/Services/5
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Director")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutService(int id, Service service)
+    public async Task<IActionResult> PutService(int id, [FromQuery] int airportId, ServiceDto serviceDto)
     {
-        if (id != service.Id)
+        var service = new Service
         {
-            return BadRequest();
-        }
+            Id = serviceDto.Id,
+            Name = serviceDto.Name,
+            Price = serviceDto.Price,
+            FacilityId = serviceDto.FacilityId,
+            IsDeleted = serviceDto.IsDeleted
+        };
 
-        await _serviceService.UpdateServiceAsync(service);
+        await _serviceService.UpdateServiceAsync(service, airportId);
 
         return NoContent();
     }
 
     // POST: api/Services
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Director")]
     [HttpPost]
-    public async Task<ActionResult<Service>> PostService(Service service)
+    public async Task<ActionResult<Service>> PostService([FromQuery] int airportId, ServiceDto serviceDto)
     {
-        await _serviceService.AddServiceAsync(service);
+        var service = new Service
+        {
+            Id = serviceDto.Id,
+            Name = serviceDto.Name,
+            Price = serviceDto.Price,
+            FacilityId = serviceDto.FacilityId,
+            IsDeleted = serviceDto.IsDeleted
+        };
 
-        return CreatedAtAction("GetService", new { id = service.Id }, service);
+        await _serviceService.AddServiceAsync(service, airportId);
+
+        serviceDto.Id = service.Id; // Assuming AddServiceAsync sets the Id of the service
+
+        return CreatedAtAction("GetService", new { id = serviceDto.Id }, serviceDto);
     }
 
     // DELETE: api/Services/5
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Director")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteService(int id)
+    public async Task<IActionResult> DeleteService(int id, [FromQuery] int airportId)
     {
+        var service = await _serviceService.GetServiceAsync(id, airportId);
+
         await _serviceService.DeleteServiceAsync(id);
 
         return NoContent();

@@ -1,4 +1,5 @@
-﻿using AviatoCore.Domain.Entities;
+﻿using AviatoCore.Application.DTOs;
+using AviatoCore.Domain.Entities;
 using AviatoCore.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace AviatoCore.Application.Interfaces
 {
     public interface IServiceService
     {
-        Task<Service> GetServiceAsync(int id);
-        Task<IEnumerable<Service>> GetAllServicesAsync();
-        Task AddServiceAsync(Service service);
-        Task UpdateServiceAsync(Service service);
+        Task<Service> GetServiceAsync(int id, int airportId);
+        Task<IEnumerable<ServiceDto>> GetAllServicesAsync(int airportId);
+        Task AddServiceAsync(Service service, int airportId);
+        Task UpdateServiceAsync(Service service, int airportId);
         Task DeleteServiceAsync(int id);
     }
 }
