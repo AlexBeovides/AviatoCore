@@ -197,6 +197,13 @@ namespace AviatoCore.Infrastructure
                 }
             );
 
+            modelBuilder.Entity<Review>().HasData(
+                new Review { Id = 1, Rating = 5, Comment = "Great service!", ReviewedAt = new DateTime(2022, 1, 1), ClientId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd", ServiceId = 1 },
+                new Review { Id = 2, Rating = 4, Comment = "Not so great service", ReviewedAt = new DateTime(2023, 1, 1), ClientId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd", ServiceId = 1 },
+                new Review { Id = 3, Rating = 4, Comment = "Good service", ReviewedAt = new DateTime(2022, 1, 2), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 2 },
+                new Review { Id = 4, Rating = 3, Comment = "Average service", ReviewedAt = new DateTime(2022, 1, 3), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 3 },
+                new Review { Id = 5, Rating = 1, Comment = "Pure Shit", ReviewedAt = new DateTime(2024, 1, 3), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 5 }
+             );
 
         }
     }

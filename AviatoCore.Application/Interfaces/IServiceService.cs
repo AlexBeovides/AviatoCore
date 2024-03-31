@@ -12,7 +12,7 @@ namespace AviatoCore.Application.Interfaces
     public interface IServiceService
     {
         Task<Service> GetServiceAsync(int id, int airportId);
-        Task<IEnumerable<ServiceDto>> GetAllServicesAsync(int airportId);
+        Task<IEnumerable<ServiceDto>> GetServicesByAirportIdAsync(int airportId);
         Task AddServiceAsync(Service service, int airportId);
         Task UpdateServiceAsync(Service service, int airportId);
         Task DeleteServiceAsync(int id);

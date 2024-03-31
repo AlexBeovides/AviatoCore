@@ -39,7 +39,7 @@ namespace AviatoCore.Application.Services
                 UserName = registerDto.Email,
                 Name = registerDto.Name,
                 Surname = registerDto.Surname
-            };
+            };   
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -102,12 +102,18 @@ namespace AviatoCore.Application.Services
             return result;
         }
 
-        private async Task<string> GenerateJwtToken(User user)
+        private async Task<string> GenerateJwtToken(User user, int airportId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("your_secret_key_here_that_is_at_least_32_characters_long"); // Replace with your secret key
             var roles = await _userManager.GetRolesAsync(user);
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.UserName ?? string.Empty) };
+            
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("UserAirportId", airportId.ToString()) 
+            };
+
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -130,11 +136,13 @@ namespace AviatoCore.Application.Services
                  .Include(u => u.Worker)
                  .FirstOrDefaultAsync(u => u.UserName == loginDto.Email);
                 var roles = await _userManager.GetRolesAsync(user);
-                var token = await GenerateJwtToken(user);
 
                 var airportId = (roles != null && roles.Count > 0 && 
                     roles[0] != "Admin" && roles[0] != "Client")
                     ? user.Worker.AirportId : 0;
+
+                var token = await GenerateJwtToken(user, airportId);
+
 
                 return new LoginResult
                 {

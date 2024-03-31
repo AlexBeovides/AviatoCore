@@ -38,7 +38,7 @@ public class PlanesController : ControllerBase
     }
 
     // PUT: api/Planes/5
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Security")]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutPlane(int id, Plane plane)
     {
@@ -53,7 +53,7 @@ public class PlanesController : ControllerBase
     }
 
     // POST: api/Planes
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Security")]
     [HttpPost]
     public async Task<ActionResult<Plane>> PostPlane(Plane plane)
     {
@@ -63,7 +63,7 @@ public class PlanesController : ControllerBase
     }
 
     // DELETE: api/Planes/5
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Security")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePlane(int id)
     {

@@ -24,7 +24,7 @@ public class ServicesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ServiceDto>>> GetServices([FromQuery] int airportId)
     {
-        var services = await _serviceService.GetAllServicesAsync(airportId);
+        var services = await _serviceService.GetServicesByAirportIdAsync(airportId);
         return Ok(services);
     }
 
