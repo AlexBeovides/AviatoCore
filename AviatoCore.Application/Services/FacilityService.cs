@@ -20,14 +20,21 @@ namespace AviatoCore.Application.Services
             _facilityRepository = facilityRepository;
         }
 
-        public async Task<Facility> GetFacilityAsync(int id)
+        public async Task<Facility> GetFacilityAsync(int id, int airportId)
         {
-            return await _facilityRepository.GetFacilityAsync(id);
+            var facility = await _facilityRepository.GetFacilityAsync(id);
+
+            if (facility.AirportId != airportId)
+            {
+                throw new UnauthorizedAccessException("You do not have access to this facility");
+            }
+
+            return facility;
         }
 
-        public async Task<IEnumerable<Facility>> GetAllFacilitiesAsync()
+        public async Task<IEnumerable<Facility>> GetFacilitiesByAirportIdAsync(int airportId)
         {
-            return await _facilityRepository.GetAllFacilitiesAsync();
+            return await _facilityRepository.GetFacilitiesByAirportIdAsync(airportId);
         }
 
         public async Task AddFacilityAsync(Facility facility)

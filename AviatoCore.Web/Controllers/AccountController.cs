@@ -67,7 +67,8 @@ namespace AviatoCore.Web.Controllers
 
             if (loginResult != null)
             {
-                return Ok(new { Token = loginResult.Token, Role = loginResult.Role });
+                return Ok(new { Token = loginResult.Token, Role = loginResult.Role ,
+                    AirportId = loginResult.AirportId});
             }
 
             return Unauthorized();

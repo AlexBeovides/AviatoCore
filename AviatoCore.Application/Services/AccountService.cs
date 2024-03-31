@@ -5,6 +5,7 @@ using AviatoCore.Infrastructure;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -125,15 +126,23 @@ namespace AviatoCore.Application.Services
 
             if (result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(loginDto.Email);
+                var user = await _userManager.Users
+                 .Include(u => u.Worker)
+                 .FirstOrDefaultAsync(u => u.UserName == loginDto.Email);
                 var roles = await _userManager.GetRolesAsync(user);
                 var token = await GenerateJwtToken(user);
+
+                var airportId = (roles != null && roles.Count > 0 && 
+                    roles[0] != "Admin" && roles[0] != "Client")
+                    ? user.Worker.AirportId : 0;
 
                 return new LoginResult
                 {
                     Token = token,
-                    Role = roles[0]
+                    Role = roles[0],
+                    AirportId = airportId
                 };
+                
             }
 
             return null;
