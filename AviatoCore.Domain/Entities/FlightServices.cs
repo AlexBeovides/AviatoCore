@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AviatoCore.Domain.Entities
 {
-    public class FlightService
+    public class FlightServices
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,8 +16,8 @@ namespace AviatoCore.Domain.Entities
         public double ServiceCost { get; set; }
         public DateTime RequestedAt { get; set; }
         public int FlightId { get; set; }
-        public Flight Flight { get; set; }
+        public Flight? Flight { get; set; }
         public int ServiceId { get; set; }
-        public Service Service { get; set; }
+        public Service? Service { get; set; }
     }
 }

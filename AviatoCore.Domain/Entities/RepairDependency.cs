@@ -12,18 +12,10 @@ namespace AviatoCore.Domain.Entities
     {
    
         public int PlaneConditionId { get; set; }
-        public PlaneCondition PlaneCondition { get; set; }
+        public PlaneCondition? PlaneCondition { get; set; }
         public int RepairAId { get; set; }
-        public Repair RepairA { get ; set; }
+        public Repair? RepairA { get ; set; }
         public int RepairBId { get; set; }
-        public Repair RepairB { get; set; }
-    }
-    public class PlaneCondition
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<RepairDependency> RepairDependencies { get; set; }
+        public Repair? RepairB { get; set; }
     }
 }

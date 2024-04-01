@@ -31,7 +31,7 @@ namespace AviatoCore.Infrastructure
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<RepairType> RepairTypes { get; set; }
         public DbSet<FlightRepair> FlightRepairs { get; set; }
-        public DbSet<FlightService> FlightServices { get; set; }
+        public DbSet<FlightServices> FlightServices { get; set; }
         public DbSet<RepairDependency> RepairDependencies { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<PlaneCondition> PlaneConditions { get; set; }
@@ -45,13 +45,13 @@ namespace AviatoCore.Infrastructure
             modelBuilder.Entity<RepairDependency>()
            .HasKey(r => new { r.PlaneConditionId, r.RepairAId, r.RepairBId });
 
-            modelBuilder.Entity<FlightService>()
+            modelBuilder.Entity<FlightServices>()
             .HasOne(fs => fs.Flight)
             .WithMany(f => f.FlightServices)
             .HasForeignKey(fs => fs.FlightId)
             .OnDelete(DeleteBehavior.NoAction); // Add this line
 
-            modelBuilder.Entity<FlightService>()
+            modelBuilder.Entity<FlightServices>()
                 .HasOne(fs => fs.Service)
                 .WithMany(s => s.FlightServices)
                 .HasForeignKey(fs => fs.ServiceId)
@@ -204,6 +204,30 @@ namespace AviatoCore.Infrastructure
                 new Review { Id = 4, Rating = 3, Comment = "Average service", ReviewedAt = new DateTime(2022, 1, 3), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 3 },
                 new Review { Id = 5, Rating = 1, Comment = "Pure Shit", ReviewedAt = new DateTime(2024, 1, 3), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 5 }
              );
+
+            modelBuilder.Entity<OwnerRole>().HasData(
+                new OwnerRole { Id = 1, Name = "Passenger" },
+                new OwnerRole { Id = 2, Name = "Captain" }
+            );
+
+            modelBuilder.Entity<PlaneCondition>().HasData(
+                new PlaneCondition { Id = 1, Name = "New" },
+                new PlaneCondition { Id = 2, Name = "Good" },
+                new PlaneCondition { Id = 3, Name = "Fair" },
+                new PlaneCondition { Id = 4, Name = "Poor" },
+                new PlaneCondition { Id = 5, Name = "Bad" }
+            );
+
+            modelBuilder.Entity<Flight>().HasData(
+                new Flight { Id = 1, ArrivalTime = DateTime.Now, DepartureTime = DateTime.Now.AddHours(2), AirportId = 1, PlaneId = 1, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 1 },
+                new Flight { Id = 2, ArrivalTime = DateTime.Now.AddHours(3), DepartureTime = DateTime.Now.AddHours(5), AirportId = 1, PlaneId = 2, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 2 },
+                new Flight { Id = 3, ArrivalTime = DateTime.Now.AddHours(6), DepartureTime = DateTime.Now.AddHours(8), AirportId = 1, PlaneId = 3, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 3 },
+                new Flight { Id = 4, ArrivalTime = DateTime.Now.AddHours(9), DepartureTime = DateTime.Now.AddHours(11), AirportId = 2, PlaneId = 4, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 4 },
+                new Flight { Id = 5, ArrivalTime = DateTime.Now.AddHours(12), DepartureTime = DateTime.Now.AddHours(14), AirportId = 5, PlaneId = 5, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 5 },
+                new Flight { Id = 6, ArrivalTime = DateTime.Now.AddHours(15), DepartureTime = DateTime.Now.AddHours(17), AirportId = 1, PlaneId = 1, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 1 },
+                new Flight { Id = 7, ArrivalTime = DateTime.Now.AddHours(18), DepartureTime = DateTime.Now.AddHours(20), AirportId = 1, PlaneId = 2, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 2 },
+                new Flight { Id = 8, ArrivalTime = DateTime.Now.AddHours(21), DepartureTime = DateTime.Now.AddHours(23), AirportId = 2, PlaneId = 3, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 3 }
+            );
 
         }
     }
