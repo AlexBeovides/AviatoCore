@@ -19,18 +19,28 @@ public class ReviewsController : ControllerBase
         _reviewService = reviewService;
     }
 
-    // GET: api/Facilities 
+    // GET: api/Reviews 
+    [Authorize(Roles = "Director")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Review>>> GetReviews([FromQuery] int airportId)
+    public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
     {
+        var airportIdValue = User.FindFirstValue("UserAirportId");
+        if (string.IsNullOrEmpty(airportIdValue))
+        {
+            return BadRequest("UserAirportId is missing");
+        }
+
+        var airportId = int.Parse(airportIdValue);
         var reviews = await _reviewService.GetReviewsByAirportIdAsync(airportId);
         return Ok(reviews);
     }
 
-    // GET: api/Facilities/5
+    // GET: api/Reviews/5
+    [Authorize(Roles = "Director")]
     [HttpGet("{id}")]
-    public async Task<ActionResult<Review>> GetReview(int id, [FromQuery] int airportId)
+    public async Task<ActionResult<Review>> GetReview(int id)
     {
+        var airportId = int.Parse(User.FindFirstValue("UserAirportId"));
         var review = await _reviewService.GetReviewAsync(id, airportId);
 
         if (review == null)
@@ -40,12 +50,17 @@ public class ReviewsController : ControllerBase
 
         return review;
     }
+
     // POST: api/Reviews
     [Authorize(Roles = "Client")]
     [HttpPost]
     public async Task<ActionResult<Review>> PostReview(ReviewDto reviewDto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return BadRequest("User identifier is missing");
+        }
 
         var review = new Review
         {
