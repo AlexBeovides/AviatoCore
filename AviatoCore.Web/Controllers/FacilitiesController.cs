@@ -51,7 +51,25 @@ public class FacilitiesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Facility>> GetFacility(int id)
     {
-        var facility = await _facilityService.GetFacilityAsync(id, UserAirportId);
+        var facility = await _facilityService.GetFacilityAsync(id);
+
+        if (facility == null)
+        {
+            return NotFound();
+        }
+        if (facility.AirportId != UserAirportId) 
+        {
+            return Unauthorized();
+        }
+
+        return facility;
+    }
+    // GET: api/Facilities/5
+    [Authorize(Roles = "Client")]
+    [HttpGet("ByClient/{id}")]
+    public async Task<ActionResult<Facility>> GetFacilityByClient(int id)
+    {
+        var facility = await _facilityService.GetFacilityAsync(id);
 
         if (facility == null)
         {
@@ -96,7 +114,7 @@ public class FacilitiesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFacility(int id)
     {
-        var facility = await _facilityService.GetFacilityAsync(id, UserAirportId);   // ?
+        var facility = await _facilityService.GetFacilityAsync(id);   // ?
 
         if (facility == null || facility.AirportId != UserAirportId)
         {

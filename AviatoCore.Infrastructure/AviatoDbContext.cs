@@ -31,7 +31,7 @@ namespace AviatoCore.Infrastructure
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<FacilityType> FacilityTypes { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<ClientServices> ClientServices { get; set; }
+        public DbSet<ServiceRequest> ClientServices { get; set; }
         public DbSet<Flight> Flights { get; set; }
         public DbSet<OwnerRole> OwnersRole { get; set; }
         public DbSet<Repair> Repairs { get; set; }

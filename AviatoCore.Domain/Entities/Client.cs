@@ -17,7 +17,7 @@ namespace AviatoCore.Domain.Entities
         public User? User { get; set; } // Navigation property
         public ClientType? ClientType { get; set; }
         public ICollection<Plane>? Planes { get; set; }
-        public ICollection<ClientServices>? ClientServices { get; set; }
+        public ICollection<ServiceRequest>? ServiceRequests { get; set; }
         public ICollection<Review>? Reviews { get; set; }
     }
 
