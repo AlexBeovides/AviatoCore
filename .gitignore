@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Cosas de Ariel
+AviatoCore.Infrastructure/AviatoCore.Infrastructure.csproj
+.vscode/launch.json
+.vscode/tasks.json
+AviatoCore.Infrastructure/DesignTimeDbContextFactory.cs
+AviatoCore.Infrastructure/Migrations/20240328222412_AddedAllEntities.cs
+AviatoCore.Web/appsettings.json
+AviatoCore.Web/AviatoCore.Web.csproj
+AviatoCore.Web/Program.cs

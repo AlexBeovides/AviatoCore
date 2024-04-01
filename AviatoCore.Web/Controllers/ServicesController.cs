@@ -61,6 +61,8 @@ public class ServicesController : ControllerBase
         {
             Id = serviceDto.Id,
             Name = serviceDto.Name,
+            Description = serviceDto.Description,
+            ImgUrl = serviceDto.ImgUrl,
             Price = serviceDto.Price,
             FacilityId = serviceDto.FacilityId,
             IsDeleted = serviceDto.IsDeleted
@@ -80,6 +82,8 @@ public class ServicesController : ControllerBase
         {
             Id = serviceDto.Id,
             Name = serviceDto.Name,
+            Description = serviceDto.Description,
+            ImgUrl = serviceDto.ImgUrl,
             Price = serviceDto.Price,
             FacilityId = serviceDto.FacilityId,
             IsDeleted = serviceDto.IsDeleted
