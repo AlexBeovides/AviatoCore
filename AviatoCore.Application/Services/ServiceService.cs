@@ -17,12 +17,14 @@ namespace AviatoCore.Application.Services
     {
         private readonly IServiceRepository _serviceRepository;
         private readonly IFacilityRepository _facilityRepository;
+        private readonly IReviewRepository _reviewRepository; // Assuming you have this
 
         public ServiceService(IServiceRepository serviceRepository,
-             IFacilityRepository facilityRepository)
+             IFacilityRepository facilityRepository, IReviewRepository reviewRepository) // Add it here
         {
             _serviceRepository = serviceRepository;
             _facilityRepository = facilityRepository;
+            _reviewRepository = reviewRepository; // And here
         }
 
         public async Task<Service> GetServiceAsync(int id, int airportId)
@@ -61,21 +63,30 @@ namespace AviatoCore.Application.Services
         public async Task<IEnumerable<ServiceDto>> GetServicesByFacIdAsync(int facilityId)
         {
             var allServices = await _serviceRepository.GetAllServicesAsync();
-            var filteredServices = allServices.Where(s => 
-                s.FacilityId == facilityId && s.IsDeleted==false);
+            var filteredServices = allServices.Where(s =>
+                s.FacilityId == facilityId && s.IsDeleted == false);
 
-            var serviceDtos = filteredServices.Select(s => new ServiceDto
+            var serviceDtos = new List<ServiceDto>();
+
+            foreach (var service in filteredServices)
             {
-                Id = s.Id,
-                Name = s.Name,
-                Price = s.Price,
-                FacilityId = s.FacilityId,
-                IsDeleted = s.IsDeleted
-            });
+                var reviews = await _reviewRepository.GetReviewsByServiceIdAsync(service.Id);
+                var averageRating = reviews.Any() ? reviews.Average(r => r.Rating) : 0;
+
+                serviceDtos.Add(new ServiceDto
+                {
+                    Id = service.Id,
+                    Name = service.Name,
+                    Price = service.Price,
+                    FacilityId = service.FacilityId,
+                    IsDeleted = service.IsDeleted,
+                    AverageRating = averageRating // Assuming you add this property to ServiceDto
+                });
+            }
 
             return serviceDtos;
         }
-        
+
         public async Task AddServiceAsync(Service service, int airportId)
         {
             var facility = await _facilityRepository.GetFacilityAsync(service.FacilityId);

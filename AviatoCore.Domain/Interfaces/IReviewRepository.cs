@@ -13,5 +13,7 @@ namespace AviatoCore.Domain.Interfaces
         Task<Review> GetReviewAsync(int id);
         Task<IEnumerable<Review>> GetAllReviewsAsync();
         Task AddReviewAsync(Review review);
+        Task<IEnumerable<Review>> GetReviewsByServiceIdAsync(int servideId);
+        
     }
 }

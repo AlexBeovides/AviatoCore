@@ -12,6 +12,7 @@ namespace AviatoCore.Application.Interfaces
     {
         Task<Plane> GetPlaneAsync(int id);
         Task<IEnumerable<Plane>> GetAllPlanesAsync();
+        Task<IEnumerable<Plane>> GetPlanesByOwnerIdAsync(string userId);
         Task AddPlaneAsync(Plane plane);
         Task UpdatePlaneAsync(Plane plane);
         Task DeletePlaneAsync(int id);

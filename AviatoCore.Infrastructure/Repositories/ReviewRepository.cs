@@ -32,6 +32,10 @@ namespace AviatoCore.Infrastructure.Repositories
         {
             return await _context.Set<Review>().ToListAsync();
         }
+        public async Task<IEnumerable<Review>> GetReviewsByServiceIdAsync (int serviceId)
+        {
+            return await _context.Reviews.Where(r => r.ServiceId == serviceId).ToListAsync();
+        }
 
         public async Task AddReviewAsync(Review review)
         {

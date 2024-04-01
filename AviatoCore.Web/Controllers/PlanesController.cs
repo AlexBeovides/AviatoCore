@@ -3,6 +3,7 @@ using AviatoCore.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 [Route("api/[controller]")]
@@ -14,6 +15,19 @@ public class PlanesController : ControllerBase
     public PlanesController(IPlaneService planeService)
     {
         _planeService = planeService;
+    }
+
+    // GET: api/Planes/MyPlanes
+    [HttpGet("MyPlanes")]
+    public async Task<ActionResult<IEnumerable<Plane>>> GetPlanesByOwnerId()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return BadRequest("User identifier is missing");
+        }
+
+        return Ok(await _planeService.GetPlanesByOwnerIdAsync(userId));
     }
 
     // GET: api/Planes 

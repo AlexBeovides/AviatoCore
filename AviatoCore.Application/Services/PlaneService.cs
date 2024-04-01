@@ -28,6 +28,13 @@ namespace AviatoCore.Application.Services
         public async Task<IEnumerable<Plane>> GetAllPlanesAsync()
         {
             return await _planeRepository.GetAllPlanesAsync();
+        } 
+        public async Task<IEnumerable<Plane>> GetPlanesByOwnerIdAsync(string userId)
+        {
+            var planes = await _planeRepository.GetAllPlanesAsync();
+            var clientPlanes = planes.Where(p => p.OwnerId == userId && p.IsDeleted == false);
+
+            return clientPlanes;
         }
 
         public async Task AddPlaneAsync(Plane plane)
