@@ -26,19 +26,35 @@ namespace AviatoCore.Web.Controllers
         {
             _repairService = repairService;
         }
+        private int UserAirportId
+        {
+            get
+            {
+                var airportIdValue = User.FindFirstValue("UserAirportId");
+                if (string.IsNullOrEmpty(airportIdValue))
+                {
+                    throw new Exception("UserAirportId is missing");
+                }
+
+                return int.Parse(airportIdValue);
+            }
+        }
 
         // GET: api/Repairs 
+        [Authorize(Roles = "Maintenance")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RepairDto>>> GetRepairs()
         {
-            return Ok(await _repairService.GetAllRepairsAsync());
+            
+            return Ok(await _repairService.GetRepairsByAirportIdAsync(UserAirportId));
         }
 
         // GET: api/Repairs/5
+        [Authorize(Roles = "Maintenance")]
         [HttpGet("{id}")]
         public async Task<ActionResult<RepairDto>> GetRepair(int id)
         {
-            var repair = await _repairService.GetRepairAsync(id);
+            var repair = await _repairService.GetRepairAsync(id, UserAirportId);
 
             if (repair == null)
             {
@@ -58,7 +74,7 @@ namespace AviatoCore.Web.Controllers
                 return BadRequest();
             }
 
-            await _repairService.UpdateRepairAsync(repair);
+            await _repairService.UpdateRepairAsync(repair, UserAirportId);
 
             return NoContent();
         }
@@ -68,7 +84,7 @@ namespace AviatoCore.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<RepairDto>> PostRepair(RepairDto repair)
         {
-            await _repairService.AddRepairAsync(repair);
+            await _repairService.AddRepairAsync(repair, UserAirportId);
             return CreatedAtAction(nameof(GetRepair), new { id = repair.Id }, repair);
         }
 
@@ -77,7 +93,7 @@ namespace AviatoCore.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRepair(int id)
         {
-            await _repairService.DeleteRepairAsync(id);
+            await _repairService.DeleteRepairAsync(id, UserAirportId);
 
             return NoContent();
         }

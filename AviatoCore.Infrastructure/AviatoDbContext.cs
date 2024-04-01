@@ -7,14 +7,20 @@ using AviatoCore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AviatoCore.Infrastructure
 {
     public class AviatoDbContext : IdentityDbContext<User>
     {
-        public AviatoDbContext(DbContextOptions<AviatoDbContext> options)
-            : base(options)
+        private readonly DatabaseSeeder _seeder;
+
+
+        public AviatoDbContext(DbContextOptions<AviatoDbContext> options,)
+        : base(options)
         {
+            
+            _seeder = new DatabaseSeeder();
         }
 
         public DbSet<Airport> Airports { get; set; }
@@ -39,35 +45,25 @@ namespace AviatoCore.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Don't forget to call base method
-            
+
+            ConfigureIdentityUserLogin(modelBuilder);
+            ConfigureRepairDependency(modelBuilder);
+            ConfigureFlightServices(modelBuilder);
+            ConfigureFlightRepair(modelBuilder);
+            ConfigureRepairDependency(modelBuilder);
+
+            _seeder.SeedData(modelBuilder).Wait();
+        }
+
+        private void ConfigureIdentityUserLogin(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => x.UserId);
+        }
 
+        private void ConfigureRepairDependency(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<RepairDependency>()
-           .HasKey(r => new { r.PlaneConditionId, r.RepairAId, r.RepairBId });
-
-            modelBuilder.Entity<FlightServices>()
-            .HasOne(fs => fs.Flight)
-            .WithMany(f => f.FlightServices)
-            .HasForeignKey(fs => fs.FlightId)
-            .OnDelete(DeleteBehavior.NoAction); // Add this line
-
-            modelBuilder.Entity<FlightServices>()
-                .HasOne(fs => fs.Service)
-                .WithMany(s => s.FlightServices)
-                .HasForeignKey(fs => fs.ServiceId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<FlightRepair>()
-                .HasOne(fr => fr.Repair)
-                .WithMany(r => r.FlightRepairs)
-                .HasForeignKey(fr => fr.RepairId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<FlightRepair>()
-                .HasOne(fr => fr.Flight)
-                .WithMany(f => f.FlightRepairs)
-                .HasForeignKey(fr => fr.FlightId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasKey(r => new { r.PlaneConditionId, r.RepairAId, r.RepairBId });
 
             modelBuilder.Entity<RepairDependency>()
                 .HasOne(rd => rd.RepairA)
@@ -80,169 +76,36 @@ namespace AviatoCore.Infrastructure
                 .WithMany(r => r.RepairBDependencies)
                 .HasForeignKey(rd => rd.RepairBId)
                 .OnDelete(DeleteBehavior.NoAction);
+        }
 
-            modelBuilder.Entity<Airport>().HasData(
-                new Airport { Id = 1, Name = "José Martí", Address = "Avenida Van Troy y Final, Rancho Boyeros, Havana, Cuba", Latitude = 22.9892, Longitude = -82.4092 },
-                new Airport { Id = 2, Name = "Juan Gualberto Gómez", Address = "Matanzas, Cuba", Latitude = 23.0344, Longitude = -81.4353 },
-                new Airport { Id = 3, Name = "Abel Santamaría", Address = "Carretera a Maleza Km 1 y medio, Santa Clara, Cuba", Latitude = 22.4922, Longitude = -79.9436 },
-                new Airport { Id = 4, Name = "Frank País", Address = "Holguín, Cuba", Latitude = 20.7856, Longitude = -76.3151 },
-                new Airport { Id = 5, Name = "Playa Baracoa", Address = "Playa Baracoa, Havana, Cuba", Latitude = 23.0328, Longitude = -82.5794 }
-            );
+        private void ConfigureFlightServices(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FlightServices>()
+                .HasOne(fs => fs.Flight)
+                .WithMany(f => f.FlightServices)
+                .HasForeignKey(fs => fs.FlightId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            // Add seed data for Role
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
-                new IdentityRole { Id = "2", Name = "Director", NormalizedName = "DIRECTOR" },
-                new IdentityRole { Id = "3", Name = "Security", NormalizedName = "SECURITY" },
-                new IdentityRole { Id = "4", Name = "Maintenance", NormalizedName = "MAINTENANCE" },
-                new IdentityRole { Id = "5", Name = "Client", NormalizedName = "CLIENT" }
-            );
+            modelBuilder.Entity<FlightServices>()
+                .HasOne(fs => fs.Service)
+                .WithMany(s => s.FlightServices)
+                .HasForeignKey(fs => fs.ServiceId)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
 
-            modelBuilder.Entity<ClientType>().HasData(
-               new ClientType { Id = 1, Name = "Regular" },
-               new ClientType { Id = 2, Name = "VIP"},
-               new ClientType { Id = 3, Name = "Company"}
-            );
+        private void ConfigureFlightRepair(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FlightRepair>()
+                .HasOne(fr => fr.Repair)
+                .WithMany(r => r.FlightRepairs)
+                .HasForeignKey(fr => fr.RepairId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<FacilityType>().HasData(
-                    new FacilityType { Id = 1, Name = "Cafeteria" },
-                    new FacilityType { Id = 2, Name = "Workshop" },
-                    new FacilityType { Id = 3, Name = "Clothing Store" },
-                    new FacilityType { Id = 4, Name = "Gift Shop" },
-                    new FacilityType { Id = 5, Name = "Currency exchange office" },
-                    new FacilityType { Id = 6, Name = "Sushi Bar" },
-                    new FacilityType { Id = 7, Name = "Restaurant" }
-            );
-
-            modelBuilder.Entity<Facility>().HasData(
-                new Facility { Id = 1, Name = "Breadway", Address = "Street 15, 14077", Description = "A popular bakery offering a variety of breads and pastries.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", AirportId = 1, FacilityTypeId = 1 },
-                new Facility { Id = 2, Name = "AMXWorkshop", Address = "Street 20, 23078", Description = "A workshop specializing in aircraft maintenance and repair.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", AirportId = 1, FacilityTypeId = 2 },
-                new Facility { Id = 3, Name = "Tascon", Address = "Street 5, 66778", Description = "A high-end shoe store offering a variety of stylish footwear.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg", AirportId = 1, FacilityTypeId = 3 },
-                new Facility { Id = 4, Name = "ArtesaniaDominicana", Address = "Street 1, 45556", Description = "A store offering a wide range of handcrafted goods from local artisans.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg", AirportId = 1, FacilityTypeId = 4 },
-                new Facility { Id = 5, Name = "CambioExchange", Address = "Street 20, 23078", Description = "A currency exchange service offering competitive rates.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg", AirportId = 1, FacilityTypeId = 5 },
-                new Facility { Id = 6, Name = "Ryu", Address = "Street 7, 12078", Description = "A Japanese restaurant offering a variety of sushi and other traditional dishes.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg", AirportId = 2, FacilityTypeId = 6 },
-                new Facility { Id = 7, Name = "Tagliatella", Address = "Street 1, 16078", Description = "An Italian restaurant offering a variety of pasta dishes and pizzas.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", AirportId = 2, FacilityTypeId = 7 }
-            );
-
-            modelBuilder.Entity<Service>().HasData(
-                 // Breadway - Cafeteria (FacilityId = 1)
-                 new Service { Id = 1, Name = "Gourmet Coffee Blend", Description = "Delicious blend of gourmet coffee", Price = 2.99, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 2, Name = "Freshly Baked Pastries", Description = "Freshly baked pastries made with love", Price = 3.49, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 // AMXWorkshop - Hangar (FacilityId = 2)
-                 new Service { Id = 3, Name = "Aircraft Engine Tune-Up", Description = "Professional aircraft engine tune-up service", Price = 499.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 4, Name = "Avionic Systems Check", Description = "Thorough avionic systems check for your aircraft", Price = 299.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 // Tascon - Clothing Store (FacilityId = 3)
-                 new Service { Id = 5, Name = "Tailored Pilot Uniforms", Description = "Custom-tailored pilot uniforms for a perfect fit", Price = 199.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 6, Name = "Flight Jackets Collection", Description = "Stylish collection of flight jackets", Price = 149.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 // ArtesaniaDominicana - Gift Shop (FacilityId = 4)
-                 new Service { Id = 7, Name = "Handcrafted Model Aircraft", Description = "Beautiful handcrafted model aircraft", Price = 59.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 8, Name = "Aviation Memorabilia", Description = "Unique aviation memorabilia for collectors", Price = 39.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 // CambioExchange - Currency Exchange Office (FacilityId = 5)
-                 new Service { Id = 9, Name = "Foreign Currency Conversion", Description = "Convenient foreign currency conversion service", Price = 0.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 10, Name = "Traveler's Cheque Issuance", Description = "Secure traveler's cheque issuance service", Price = 1.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 // Ryu - Sushi Bar (FacilityId = 6)
-                 new Service { Id = 11, Name = "Sashimi Selection", Description = "Fresh and delicious sashimi selection", Price = 18.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 12, Name = "Signature Sushi Rolls", Description = "Exquisite signature sushi rolls", Price = 15.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 // Tagliatella - Restaurant (FacilityId = 7)
-                 new Service { Id = 13, Name = "Authentic Italian Pasta Selection", Description = "Authentic Italian pasta dishes", Price = 12.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                 new Service { Id = 14, Name = "Gourmet Pizza Delivery Service", Description = "Delicious gourmet pizza delivered to your location", Price = 15.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" }
-             );
-
-
-            modelBuilder.Entity<Plane>().HasData(
-                new Plane
-                {
-                    Id = 1,
-                    Classification = "Commercial",
-                    CargoCapacity = 20000,
-                    CrewCount = 5,
-                    PassengerCapacity = 200,
-                    OwnerId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd"
-                },
-                new Plane
-                {
-                    Id = 2,
-                    Classification = "Private",
-                    CargoCapacity = 5000,
-                    CrewCount = 2,
-                    PassengerCapacity = 10,
-                    OwnerId = "8e03cd57-c768-4a44-b174-45a450441b44"
-                },
-                new Plane
-                {
-                    Id = 3,
-                    Classification = "Cargo",
-                    CargoCapacity = 50000,
-                    CrewCount = 5,
-                    PassengerCapacity = 0,
-                    OwnerId = "029eaca6-cb0f-408b-b6c4-c51cea6e5441"
-                },
-                new Plane
-                {
-                    Id = 4,
-                    Classification = "Military",
-                    CargoCapacity = 15000,
-                    CrewCount = 10,
-                    PassengerCapacity = 50,
-                    OwnerId = "029eaca6-cb0f-408b-b6c4-c51cea6e5441"
-                },
-                new Plane
-                {
-                    Id = 5,
-                    Classification = "Commercial",
-                    CargoCapacity = 25000,
-                    CrewCount = 6,
-                    PassengerCapacity = 250,
-                    OwnerId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd"
-                }
-            );
-
-            modelBuilder.Entity<Review>().HasData(
-                new Review { Id = 1, Rating = 5, Comment = "Great service!", ReviewedAt = new DateTime(2022, 1, 1), ClientId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd", ServiceId = 1 },
-                new Review { Id = 2, Rating = 4, Comment = "Not so great service", ReviewedAt = new DateTime(2023, 1, 1), ClientId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd", ServiceId = 1 },
-                new Review { Id = 3, Rating = 4, Comment = "Good service", ReviewedAt = new DateTime(2022, 1, 2), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 2 },
-                new Review { Id = 4, Rating = 3, Comment = "Average service", ReviewedAt = new DateTime(2022, 1, 3), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 3 },
-                new Review { Id = 5, Rating = 1, Comment = "Pure Shit", ReviewedAt = new DateTime(2024, 1, 3), ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d", ServiceId = 5 }
-             );
-
-            modelBuilder.Entity<OwnerRole>().HasData(
-                new OwnerRole { Id = 1, Name = "Passenger" },
-                new OwnerRole { Id = 2, Name = "Captain" }
-            );
-
-            modelBuilder.Entity<PlaneCondition>().HasData(
-                new PlaneCondition { Id = 1, Name = "New" },
-                new PlaneCondition { Id = 2, Name = "Good" },
-                new PlaneCondition { Id = 3, Name = "Fair" },
-                new PlaneCondition { Id = 4, Name = "Poor" },
-                new PlaneCondition { Id = 5, Name = "Bad" }
-            );
-
-            modelBuilder.Entity<Flight>().HasData(
-                new Flight { Id = 1, ArrivalTime = DateTime.Now, DepartureTime = DateTime.Now.AddHours(2), AirportId = 1, PlaneId = 1, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 1 },
-                new Flight { Id = 2, ArrivalTime = DateTime.Now.AddHours(3), DepartureTime = DateTime.Now.AddHours(5), AirportId = 1, PlaneId = 2, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 2 },
-                new Flight { Id = 3, ArrivalTime = DateTime.Now.AddHours(6), DepartureTime = DateTime.Now.AddHours(8), AirportId = 1, PlaneId = 3, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 3 },
-                new Flight { Id = 4, ArrivalTime = DateTime.Now.AddHours(9), DepartureTime = DateTime.Now.AddHours(11), AirportId = 2, PlaneId = 4, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 4 },
-                new Flight { Id = 5, ArrivalTime = DateTime.Now.AddHours(12), DepartureTime = DateTime.Now.AddHours(14), AirportId = 5, PlaneId = 5, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 5 },
-                new Flight { Id = 6, ArrivalTime = DateTime.Now.AddHours(15), DepartureTime = DateTime.Now.AddHours(17), AirportId = 1, PlaneId = 1, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 1 },
-                new Flight { Id = 7, ArrivalTime = DateTime.Now.AddHours(18), DepartureTime = DateTime.Now.AddHours(20), AirportId = 1, PlaneId = 2, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 2 },
-                new Flight { Id = 8, ArrivalTime = DateTime.Now.AddHours(21), DepartureTime = DateTime.Now.AddHours(23), AirportId = 2, PlaneId = 3, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 3 }
-            );
-
-             modelBuilder.Entity<RepairType>().HasData(
-                new RepairType { Id = 1, Name = "Engine Overhaul" },
-                new RepairType { Id = 2, Name = "Hydraulic System Repair" },
-                new RepairType { Id = 3, Name = "Electrical System Repair" },
-                new RepairType { Id = 4, Name = "Avionics Repair" },
-                new RepairType { Id = 5, Name = "Structural Repair" },
-                new RepairType { Id = 6, Name = "Fuel System Repair" }
-            );
-
-            modelBuilder.Entity<Repair>().HasData(
-               new Repair { Id = 3, ServiceId=3, RepairTypeId=1 },
-               new Repair { Id = 4, ServiceId=4, RepairTypeId=4 }
-           );
-
+            modelBuilder.Entity<FlightRepair>()
+                .HasOne(fr => fr.Flight)
+                .WithMany(f => f.FlightRepairs)
+                .HasForeignKey(fr => fr.FlightId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

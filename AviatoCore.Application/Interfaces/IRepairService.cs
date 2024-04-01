@@ -12,10 +12,10 @@ namespace AviatoCore.Application.Interfaces
 {
     public interface IRepairService
     {
-        Task<RepairDto> GetRepairAsync(int id);
-        Task<IEnumerable<RepairDto>> GetAllRepairsAsync();
-        Task AddRepairAsync(RepairDto repairDto);
-        Task UpdateRepairAsync(RepairDto repairDto);
-        Task DeleteRepairAsync(int id);
+        Task<RepairDto> GetRepairAsync(int id, int userAirportId);
+        Task<IEnumerable<RepairDto>> GetRepairsByAirportIdAsync(int userAirportId);
+        Task AddRepairAsync(RepairDto repairDto, int userAirportId);
+        Task UpdateRepairAsync(RepairDto repairDto, int userAirportId);
+        Task DeleteRepairAsync(int id, int userAirportId);
     }
 }

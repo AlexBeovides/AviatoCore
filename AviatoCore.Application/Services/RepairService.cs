@@ -6,31 +6,65 @@ using AviatoCore.Infrastructure;
 using AviatoCore.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AviatoCore.Application.Services
 {
     public class RepairService : IRepairService
     {
+        private readonly IFacilityRepository _facilityRepository;
         private readonly IServiceRepository _serviceRepository;
         private readonly IRepairRepository _repairRepository;
+        private readonly ILogger<RepairService> _logger;
 
-        public RepairService(IServiceRepository serviceRepository,
-            IRepairRepository repairRepository)
+        public RepairService(IFacilityRepository facilityRepository,
+            IServiceRepository serviceRepository,
+            IRepairRepository repairRepository,
+            ILogger<RepairService> logger)
         {
+            _facilityRepository = facilityRepository;
             _serviceRepository = serviceRepository;
             _repairRepository = repairRepository;
+            _logger = logger;
         }
 
-        public async Task<RepairDto> GetRepairAsync(int id)
+        private async Task<Service> GetServiceAsync(int id)
         {
             var service = await _serviceRepository.GetServiceAsync(id);
+            if (service == null)
+            {
+                throw new Exception("Service not found.");
+            }
+            return service;
+        }
+
+        private async Task<Facility> GetFacilityAsync(int id, int userAirportId)
+        {
+            var facility = await _facilityRepository.GetFacilityAsync(id);
+            if (facility == null || facility.AirportId != userAirportId)
+            {
+                throw new Exception("Facility not found.");
+            }
+            return facility;
+        }
+
+        public async Task<RepairDto> GetRepairAsync(int id, int userAirportId)
+        {
+            var service = await GetServiceAsync(id);
             var repair = await _repairRepository.GetRepairAsync(id);
+            if (repair == null)
+            {
+                throw new Exception("Repair not found.");
+            }
+
+            await GetFacilityAsync(service.FacilityId, userAirportId);
 
             return new RepairDto
             {
@@ -43,23 +77,20 @@ namespace AviatoCore.Application.Services
             };
         }
 
-        public async Task<IEnumerable<RepairDto>> GetAllRepairsAsync()
+        public async Task<IEnumerable<RepairDto>> GetRepairsByAirportIdAsync(int userAirportId)
         {
             var repairs = await _repairRepository.GetAllRepairsAsync();
-
-            // Convert the services to a list
             var repairList = repairs.ToList();
 
-            // Create a list to store the RepairDto objects
             var repairDtos = new List<RepairDto>();
 
             foreach (var repair in repairList)
             {
-                var service = await _serviceRepository.GetServiceAsync(repair.ServiceId);
-
-                if (service != null)
+                try
                 {
-                    // Create a RepairDto object and add it to the list
+                    var service = await GetServiceAsync(repair.ServiceId);
+                    await _facilityRepository.GetFacilityAsync(service.FacilityId); // implicit validation
+
                     repairDtos.Add(new RepairDto
                     {
                         Id = service.Id,
@@ -72,13 +103,19 @@ namespace AviatoCore.Application.Services
                         RepairTypeId = repair.RepairTypeId
                     });
                 }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Failed to process repair with ID {repair.Id}");
+                }
             }
 
             return repairDtos;
         }
 
-        public async Task AddRepairAsync(RepairDto repairDto)
+        public async Task AddRepairAsync(RepairDto repairDto, int userAirportId)
         {
+            await GetFacilityAsync(repairDto.FacilityId , userAirportId); // implicit validation
+
             var service = new Service
             {
                 Name = repairDto.Name,
@@ -99,8 +136,10 @@ namespace AviatoCore.Application.Services
             await _repairRepository.AddRepairAsync(repair);
         }
 
-        public async Task UpdateRepairAsync(RepairDto repairDto)
+        public async Task UpdateRepairAsync(RepairDto repairDto, int userAirportId)
         {
+            await GetFacilityAsync(repairDto.FacilityId, userAirportId); // implicit validation
+
             var service = await _serviceRepository.GetServiceAsync(repairDto.Id);
             var repair = await _repairRepository.GetRepairAsync(repairDto.Id);
 
@@ -115,8 +154,11 @@ namespace AviatoCore.Application.Services
             await _repairRepository.UpdateRepairAsync(repair);
         }
 
-        public async Task DeleteRepairAsync(int id)
+        public async Task DeleteRepairAsync(int id, int userAirportId)
         {
+            var service = await GetServiceAsync(id);  
+            await GetFacilityAsync(service.FacilityId, userAirportId);  // implicit validation
+
             await _serviceRepository.DeleteServiceAsync(id);
         }
     }
