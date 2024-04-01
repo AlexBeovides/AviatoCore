@@ -13,6 +13,28 @@ namespace AviatoCore.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropIndex(
+                name: "IX_Workers_UserId",
+                table: "Workers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Clients_UserId",
+                table: "Clients");
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsDeleted",
+                table: "AspNetUsers",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsDeleted",
+                table: "Airports",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.CreateTable(
                 name: "FacilityTypes",
                 columns: table => new
@@ -62,7 +84,8 @@ namespace AviatoCore.Infrastructure.Migrations
                     CargoCapacity = table.Column<double>(type: "float", nullable: false),
                     CrewCount = table.Column<int>(type: "int", nullable: false),
                     PassengerCapacity = table.Column<int>(type: "int", nullable: false),
-                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,10 +118,12 @@ namespace AviatoCore.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AirportId = table.Column<int>(type: "int", nullable: false),
-                    FacilityTypeId = table.Column<int>(type: "int", nullable: false)
+                    FacilityTypeId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -127,7 +152,9 @@ namespace AviatoCore.Infrastructure.Migrations
                     DepartureTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AirportId = table.Column<int>(type: "int", nullable: false),
                     PlaneId = table.Column<int>(type: "int", nullable: false),
-                    OwnerRoleId = table.Column<int>(type: "int", nullable: false)
+                    OwnerRoleId = table.Column<int>(type: "int", nullable: false),
+                    NeedsCheck = table.Column<bool>(type: "bit", nullable: false),
+                    PlaneConditionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,6 +172,12 @@ namespace AviatoCore.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Flights_PlaneConditions_PlaneConditionId",
+                        column: x => x.PlaneConditionId,
+                        principalTable: "PlaneConditions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Flights_Planes_PlaneId",
                         column: x => x.PlaneId,
                         principalTable: "Planes",
@@ -159,8 +192,11 @@ namespace AviatoCore.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    FacilityId = table.Column<int>(type: "int", nullable: false)
+                    FacilityId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -230,8 +266,7 @@ namespace AviatoCore.Infrastructure.Migrations
                 name: "Repairs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     ServiceId = table.Column<int>(type: "int", nullable: false),
                     RepairTypeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -337,6 +372,41 @@ namespace AviatoCore.Infrastructure.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.UpdateData(
+                table: "Airports",
+                keyColumn: "Id",
+                keyValue: 1,
+                column: "IsDeleted",
+                value: false);
+
+            migrationBuilder.UpdateData(
+                table: "Airports",
+                keyColumn: "Id",
+                keyValue: 2,
+                column: "IsDeleted",
+                value: false);
+
+            migrationBuilder.UpdateData(
+                table: "Airports",
+                keyColumn: "Id",
+                keyValue: 3,
+                column: "IsDeleted",
+                value: false);
+
+            migrationBuilder.UpdateData(
+                table: "Airports",
+                keyColumn: "Id",
+                keyValue: 4,
+                column: "IsDeleted",
+                value: false);
+
+            migrationBuilder.UpdateData(
+                table: "Airports",
+                keyColumn: "Id",
+                keyValue: 5,
+                column: "IsDeleted",
+                value: false);
+
             migrationBuilder.InsertData(
                 table: "FacilityTypes",
                 columns: new[] { "Id", "Name" },
@@ -352,30 +422,94 @@ namespace AviatoCore.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Planes",
-                columns: new[] { "Id", "CargoCapacity", "Classification", "CrewCount", "OwnerId", "PassengerCapacity" },
+                table: "OwnersRole",
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, 20000.0, "Commercial", 5, "684c656f-0424-4c06-9a2e-92bac4f3d9bd", 200 },
-                    { 2, 5000.0, "Private", 2, "8e03cd57-c768-4a44-b174-45a450441b44", 10 },
-                    { 3, 50000.0, "Cargo", 5, "029eaca6-cb0f-408b-b6c4-c51cea6e5441", 0 },
-                    { 4, 15000.0, "Military", 10, "029eaca6-cb0f-408b-b6c4-c51cea6e5441", 50 },
-                    { 5, 25000.0, "Commercial", 6, "684c656f-0424-4c06-9a2e-92bac4f3d9bd", 250 }
+                    { 1, "Passenger" },
+                    { 2, "Captain" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PlaneConditions",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "New" },
+                    { 2, "Good" },
+                    { 3, "Fair" },
+                    { 4, "Poor" },
+                    { 5, "Bad" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "RepairTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Engine Overhaul" },
+                    { 2, "Hydraulic System Repair" },
+                    { 3, "Electrical System Repair" },
+                    { 4, "Avionics Repair" },
+                    { 5, "Structural Repair" },
+                    { 6, "Fuel System Repair" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Facilities",
-                columns: new[] { "Id", "Address", "AirportId", "FacilityTypeId", "ImgUrl", "Name" },
+                columns: new[] { "Id", "Address", "AirportId", "Description", "FacilityTypeId", "ImgUrl", "IsDeleted", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Street 15, 14077", 1, 1, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", "Breadway" },
-                    { 2, "Street 20, 23078", 1, 2, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", "AMXWorkshop" },
-                    { 3, "Street 5, 66778", 1, 3, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg", "Tascon" },
-                    { 4, "Street 1, 45556", 1, 4, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg", "ArtesaniaDominicana" },
-                    { 5, "Street 20, 23078", 1, 5, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg", "CambioExchange" },
-                    { 6, "Street 7, 12078", 2, 6, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg", "Ryu" },
-                    { 7, "Street 1, 16078", 2, 7, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", "Tagliatella" }
+                    { 1, "Street 15, 14077", 1, "A popular bakery offering a variety of breads and pastries.", 1, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", false, "Breadway" },
+                    { 2, "Street 20, 23078", 1, "A workshop specializing in aircraft maintenance and repair.", 2, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", false, "AMXWorkshop" },
+                    { 3, "Street 5, 66778", 1, "A high-end shoe store offering a variety of stylish footwear.", 3, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg", false, "Tascon" },
+                    { 4, "Street 1, 45556", 1, "A store offering a wide range of handcrafted goods from local artisans.", 4, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg", false, "ArtesaniaDominicana" },
+                    { 5, "Street 20, 23078", 1, "A currency exchange service offering competitive rates.", 5, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg", false, "CambioExchange" },
+                    { 6, "Street 7, 12078", 2, "A Japanese restaurant offering a variety of sushi and other traditional dishes.", 6, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg", false, "Ryu" },
+                    { 7, "Street 1, 16078", 2, "An Italian restaurant offering a variety of pasta dishes and pizzas.", 7, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", false, "Tagliatella" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Services",
+                columns: new[] { "Id", "Description", "FacilityId", "ImgUrl", "IsDeleted", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "Delicious blend of gourmet coffee", 1, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Gourmet Coffee Blend", 2.9900000000000002 },
+                    { 2, "Freshly baked pastries made with love", 1, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Freshly Baked Pastries", 3.4900000000000002 },
+                    { 3, "Professional aircraft engine tune-up service", 2, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Aircraft Engine Tune-Up", 499.99000000000001 },
+                    { 4, "Thorough avionic systems check for your aircraft", 2, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Avionic Systems Check", 299.99000000000001 },
+                    { 5, "Custom-tailored pilot uniforms for a perfect fit", 3, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Tailored Pilot Uniforms", 199.99000000000001 },
+                    { 6, "Stylish collection of flight jackets", 3, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Flight Jackets Collection", 149.99000000000001 },
+                    { 7, "Beautiful handcrafted model aircraft", 4, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Handcrafted Model Aircraft", 59.990000000000002 },
+                    { 8, "Unique aviation memorabilia for collectors", 4, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Aviation Memorabilia", 39.990000000000002 },
+                    { 9, "Convenient foreign currency conversion service", 5, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Foreign Currency Conversion", 0.98999999999999999 },
+                    { 10, "Secure traveler's cheque issuance service", 5, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Traveler's Cheque Issuance", 1.99 },
+                    { 11, "Fresh and delicious sashimi selection", 6, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Sashimi Selection", 18.989999999999998 },
+                    { 12, "Exquisite signature sushi rolls", 6, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Signature Sushi Rolls", 15.99 },
+                    { 13, "Authentic Italian pasta dishes", 7, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Authentic Italian Pasta Selection", 12.99 },
+                    { 14, "Delicious gourmet pizza delivered to your location", 7, "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png", false, "Gourmet Pizza Delivery Service", 15.99 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Repairs",
+                columns: new[] { "Id", "RepairTypeId", "ServiceId" },
+                values: new object[,]
+                {
+                    { 3, 1, 3 },
+                    { 4, 4, 4 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workers_UserId",
+                table: "Workers",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_UserId",
+                table: "Clients",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientServices_ClientId",
@@ -416,6 +550,11 @@ namespace AviatoCore.Infrastructure.Migrations
                 name: "IX_Flights_OwnerRoleId",
                 table: "Flights",
                 column: "OwnerRoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Flights_PlaneConditionId",
+                table: "Flights",
+                column: "PlaneConditionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flights_PlaneId",
@@ -495,13 +634,13 @@ namespace AviatoCore.Infrastructure.Migrations
                 name: "Flights");
 
             migrationBuilder.DropTable(
-                name: "PlaneConditions");
-
-            migrationBuilder.DropTable(
                 name: "Repairs");
 
             migrationBuilder.DropTable(
                 name: "OwnersRole");
+
+            migrationBuilder.DropTable(
+                name: "PlaneConditions");
 
             migrationBuilder.DropTable(
                 name: "Planes");
@@ -517,6 +656,32 @@ namespace AviatoCore.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "FacilityTypes");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Workers_UserId",
+                table: "Workers");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Clients_UserId",
+                table: "Clients");
+
+            migrationBuilder.DropColumn(
+                name: "IsDeleted",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "IsDeleted",
+                table: "Airports");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Workers_UserId",
+                table: "Workers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_UserId",
+                table: "Clients",
+                column: "UserId");
         }
     }
 }

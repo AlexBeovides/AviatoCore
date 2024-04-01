@@ -11,6 +11,7 @@ namespace AviatoCore.Domain.Entities
     public class Repair
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public int ServiceId { get; set; }
         public Service? Service { get; set; }

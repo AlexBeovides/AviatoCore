@@ -401,96 +401,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("PlaneId");
 
                     b.ToTable("Flights");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AirportId = 1,
-                            ArrivalTime = new DateTime(2024, 4, 1, 5, 11, 36, 393, DateTimeKind.Local).AddTicks(1783),
-                            DepartureTime = new DateTime(2024, 4, 1, 7, 11, 36, 393, DateTimeKind.Local).AddTicks(1841),
-                            NeedsCheck = false,
-                            OwnerRoleId = 1,
-                            PlaneConditionId = 1,
-                            PlaneId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AirportId = 1,
-                            ArrivalTime = new DateTime(2024, 4, 1, 8, 11, 36, 393, DateTimeKind.Local).AddTicks(1849),
-                            DepartureTime = new DateTime(2024, 4, 1, 10, 11, 36, 393, DateTimeKind.Local).AddTicks(1850),
-                            NeedsCheck = true,
-                            OwnerRoleId = 2,
-                            PlaneConditionId = 2,
-                            PlaneId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AirportId = 1,
-                            ArrivalTime = new DateTime(2024, 4, 1, 11, 11, 36, 393, DateTimeKind.Local).AddTicks(1853),
-                            DepartureTime = new DateTime(2024, 4, 1, 13, 11, 36, 393, DateTimeKind.Local).AddTicks(1855),
-                            NeedsCheck = false,
-                            OwnerRoleId = 1,
-                            PlaneConditionId = 3,
-                            PlaneId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AirportId = 2,
-                            ArrivalTime = new DateTime(2024, 4, 1, 14, 11, 36, 393, DateTimeKind.Local).AddTicks(1858),
-                            DepartureTime = new DateTime(2024, 4, 1, 16, 11, 36, 393, DateTimeKind.Local).AddTicks(1859),
-                            NeedsCheck = true,
-                            OwnerRoleId = 2,
-                            PlaneConditionId = 4,
-                            PlaneId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AirportId = 5,
-                            ArrivalTime = new DateTime(2024, 4, 1, 17, 11, 36, 393, DateTimeKind.Local).AddTicks(1861),
-                            DepartureTime = new DateTime(2024, 4, 1, 19, 11, 36, 393, DateTimeKind.Local).AddTicks(1863),
-                            NeedsCheck = false,
-                            OwnerRoleId = 1,
-                            PlaneConditionId = 5,
-                            PlaneId = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AirportId = 1,
-                            ArrivalTime = new DateTime(2024, 4, 1, 20, 11, 36, 393, DateTimeKind.Local).AddTicks(1865),
-                            DepartureTime = new DateTime(2024, 4, 1, 22, 11, 36, 393, DateTimeKind.Local).AddTicks(1866),
-                            NeedsCheck = true,
-                            OwnerRoleId = 2,
-                            PlaneConditionId = 1,
-                            PlaneId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AirportId = 1,
-                            ArrivalTime = new DateTime(2024, 4, 1, 23, 11, 36, 393, DateTimeKind.Local).AddTicks(1869),
-                            DepartureTime = new DateTime(2024, 4, 2, 1, 11, 36, 393, DateTimeKind.Local).AddTicks(1870),
-                            NeedsCheck = false,
-                            OwnerRoleId = 1,
-                            PlaneConditionId = 2,
-                            PlaneId = 2
-                        },
-                        new
-                        {
-                            Id = 8,
-                            AirportId = 2,
-                            ArrivalTime = new DateTime(2024, 4, 2, 2, 11, 36, 393, DateTimeKind.Local).AddTicks(1872),
-                            DepartureTime = new DateTime(2024, 4, 2, 4, 11, 36, 393, DateTimeKind.Local).AddTicks(1873),
-                            NeedsCheck = true,
-                            OwnerRoleId = 2,
-                            PlaneConditionId = 3,
-                            PlaneId = 3
-                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.FlightRepair", b =>
@@ -616,58 +526,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Planes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CargoCapacity = 20000.0,
-                            Classification = "Commercial",
-                            CrewCount = 5,
-                            IsDeleted = false,
-                            OwnerId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd",
-                            PassengerCapacity = 200
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CargoCapacity = 5000.0,
-                            Classification = "Private",
-                            CrewCount = 2,
-                            IsDeleted = false,
-                            OwnerId = "8e03cd57-c768-4a44-b174-45a450441b44",
-                            PassengerCapacity = 10
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CargoCapacity = 50000.0,
-                            Classification = "Cargo",
-                            CrewCount = 5,
-                            IsDeleted = false,
-                            OwnerId = "029eaca6-cb0f-408b-b6c4-c51cea6e5441",
-                            PassengerCapacity = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CargoCapacity = 15000.0,
-                            Classification = "Military",
-                            CrewCount = 10,
-                            IsDeleted = false,
-                            OwnerId = "029eaca6-cb0f-408b-b6c4-c51cea6e5441",
-                            PassengerCapacity = 50
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CargoCapacity = 25000.0,
-                            Classification = "Commercial",
-                            CrewCount = 6,
-                            IsDeleted = false,
-                            OwnerId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd",
-                            PassengerCapacity = 250
-                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.PlaneCondition", b =>
@@ -717,10 +575,7 @@ namespace AviatoCore.Infrastructure.Migrations
             modelBuilder.Entity("AviatoCore.Domain.Entities.Repair", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("RepairTypeId")
                         .HasColumnType("int");
@@ -852,53 +707,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Reviews");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ClientId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd",
-                            Comment = "Great service!",
-                            Rating = 5,
-                            ReviewedAt = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ClientId = "684c656f-0424-4c06-9a2e-92bac4f3d9bd",
-                            Comment = "Not so great service",
-                            Rating = 4,
-                            ReviewedAt = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d",
-                            Comment = "Good service",
-                            Rating = 4,
-                            ReviewedAt = new DateTime(2022, 1, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d",
-                            Comment = "Average service",
-                            Rating = 3,
-                            ReviewedAt = new DateTime(2022, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ServiceId = 3
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ClientId = "246e6681-4f70-40d3-9c18-2c38e36bde1d",
-                            Comment = "Pure Shit",
-                            Rating = 1,
-                            ReviewedAt = new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ServiceId = 5
-                        });
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.Service", b =>

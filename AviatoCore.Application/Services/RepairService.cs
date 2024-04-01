@@ -70,6 +70,8 @@ namespace AviatoCore.Application.Services
             {
                 Id = service.Id,
                 Name = service.Name,
+                Description = service.Description,
+                ImgUrl = service.ImgUrl,
                 Price = service.Price,
                 FacilityId = service.FacilityId,
                 IsDeleted = service.IsDeleted,
@@ -119,12 +121,15 @@ namespace AviatoCore.Application.Services
             var service = new Service
             {
                 Name = repairDto.Name,
+                Description = repairDto.Description,
+                ImgUrl = repairDto.ImgUrl,
                 Price = repairDto.Price,
                 FacilityId = repairDto.FacilityId,
                 IsDeleted = repairDto.IsDeleted
             };
 
             await _serviceRepository.AddServiceAsync(service);
+
 
             var repair = new Repair
             {
@@ -144,6 +149,8 @@ namespace AviatoCore.Application.Services
             var repair = await _repairRepository.GetRepairAsync(repairDto.Id);
 
             service.Name = repairDto.Name;
+            service.Description = repairDto.Description;
+            service.ImgUrl = repairDto.ImgUrl;
             service.Price = repairDto.Price;
             service.FacilityId = repairDto.FacilityId;
             service.IsDeleted = repairDto.IsDeleted;
