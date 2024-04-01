@@ -33,6 +33,14 @@ namespace AviatoCore.Infrastructure.Repositories
             return await _context.Set<Facility>().Where(f => f.AirportId == airportId).ToListAsync();
         }
 
+        public async Task<IEnumerable<Facility>> GetFacilitiesByAirportIdWithFacTypeAsync()
+        {
+            return await _context.Facilities
+                .Include(f => f.FacilityType)
+                .ToListAsync();
+        }
+
+
         public async Task AddFacilityAsync(Facility facility)
         {
             await _context.Set<Facility>().AddAsync(facility);

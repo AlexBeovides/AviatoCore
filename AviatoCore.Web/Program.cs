@@ -108,7 +108,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (Environment.GetEnvironmentVariable("USE_HTTPS_REDIRECTION") == "true")
+{
+    app.UseHttpsRedirection();
+}
 
 // Use CORS middleware here.
 app.UseCors("AllowMyClient");

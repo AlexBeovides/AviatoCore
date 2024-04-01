@@ -46,7 +46,7 @@ namespace AviatoCore.Web.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("add-worker")]
-        public async Task<IActionResult> AddWorker(WorkerDto workerDto)
+        public async Task<IActionResult> AddWorker(WorkerDto workerDto)         // remove
         {
             var result = await _accountService.AddWorker(workerDto);
 

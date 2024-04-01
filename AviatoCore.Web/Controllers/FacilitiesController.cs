@@ -18,10 +18,19 @@ public class FacilitiesController : ControllerBase
     }
 
     // GET: api/Facilities 
+    [Authorize(Roles = "Director")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Facility>>> GetFacilities([FromQuery] int airportId)
+    public async Task<ActionResult<IEnumerable<Facility>>> GetFacilitiesByAirportId([FromQuery] int airportId)
     {
         return Ok(await _facilityService.GetFacilitiesByAirportIdAsync(airportId));
+    }
+
+    // GET: api/Facilities 
+    [Authorize(Roles = "Client")]
+    [HttpGet("WithType/{airportId}")]
+    public async Task<ActionResult<IEnumerable<FacilityDto>>> GetFacilitiesByAirportIdWithFacType(int airportId)
+    {
+        return Ok(await _facilityService.GetFacilitiesByAirportIdWithFacTypeAsync(airportId));
     }
 
     // GET: api/Facilities/5

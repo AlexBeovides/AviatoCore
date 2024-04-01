@@ -12,6 +12,7 @@ namespace AviatoCore.Domain.Interfaces
     {
         Task<Facility> GetFacilityAsync(int id);
         Task<IEnumerable<Facility>> GetFacilitiesByAirportIdAsync(int airportId);
+        Task<IEnumerable<Facility>> GetFacilitiesByAirportIdWithFacTypeAsync();
         Task AddFacilityAsync(Facility facility);
         Task UpdateFacilityAsync(Facility facility);
         Task DeleteFacilityAsync(int id);

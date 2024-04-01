@@ -37,6 +37,25 @@ namespace AviatoCore.Application.Services
             return await _facilityRepository.GetFacilitiesByAirportIdAsync(airportId);
         }
 
+        public async Task<IEnumerable<FacilityDto>> GetFacilitiesByAirportIdWithFacTypeAsync(int airportId)
+        {
+            var allFacilities = await _facilityRepository.GetFacilitiesByAirportIdWithFacTypeAsync();
+
+            var facilities = allFacilities
+                .Where(f => f.AirportId == airportId)
+                .Select(f => new FacilityDto
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Address = f.Address,
+                    ImgUrl = f.ImgUrl,
+                    AirportId = f.AirportId,
+                    FacilityType = f.FacilityType.Name,
+                    IsDeleted = f.IsDeleted
+                });
+            return facilities;
+        }
+
         public async Task AddFacilityAsync(Facility facility)
         {
             await _facilityRepository.AddFacilityAsync(facility);

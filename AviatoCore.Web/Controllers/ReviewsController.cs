@@ -40,7 +40,13 @@ public class ReviewsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Review>> GetReview(int id)
     {
-        var airportId = int.Parse(User.FindFirstValue("UserAirportId"));
+        var airportIdValue = User.FindFirstValue("UserAirportId");
+        if (string.IsNullOrEmpty(airportIdValue))
+        {
+            return BadRequest("UserAirportId is missing");
+        }
+        var airportId = int.Parse(airportIdValue);
+
         var review = await _reviewService.GetReviewAsync(id, airportId);
 
         if (review == null)
