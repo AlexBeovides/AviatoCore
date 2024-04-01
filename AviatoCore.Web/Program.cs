@@ -22,11 +22,11 @@ builder.Services.AddDefaultIdentity<User>(options => { })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AviatoDbContext>();
 
-// Add CORS services.
+
+ //Add CORS services.
 builder.Services.AddCors(options => {
-    options.AddPolicy("AllowMyClient",
-        builder => builder.WithOrigins("http://localhost:5173",
-            "http://192.168.76.25:5173")  
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -118,7 +118,7 @@ if (Environment.GetEnvironmentVariable("USE_HTTPS_REDIRECTION") == "true")
 }
 
 // Use CORS middleware here.
-app.UseCors("AllowMyClient");
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

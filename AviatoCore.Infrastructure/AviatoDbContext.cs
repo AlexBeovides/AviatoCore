@@ -16,7 +16,7 @@ namespace AviatoCore.Infrastructure
         private readonly DatabaseSeeder _seeder;
 
 
-        public AviatoDbContext(DbContextOptions<AviatoDbContext> options,)
+        public AviatoDbContext(DbContextOptions<AviatoDbContext> options)
         : base(options)
         {
             
