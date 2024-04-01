@@ -42,7 +42,7 @@ namespace AviatoCore.Application.Services
             var allFacilities = await _facilityRepository.GetFacilitiesByAirportIdWithFacTypeAsync();
 
             var facilities = allFacilities
-                .Where(f => f.AirportId == airportId)
+                .Where(f => f.AirportId == airportId && f.IsDeleted==false)
                 .Select(f => new FacilityDto
                 {
                     Id = f.Id,

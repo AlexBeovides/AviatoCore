@@ -58,6 +58,24 @@ namespace AviatoCore.Application.Services
             return serviceDtos;
         }
 
+        public async Task<IEnumerable<ServiceDto>> GetServicesByFacIdAsync(int facilityId)
+        {
+            var allServices = await _serviceRepository.GetAllServicesAsync();
+            var filteredServices = allServices.Where(s => 
+                s.FacilityId == facilityId && s.IsDeleted==false);
+
+            var serviceDtos = filteredServices.Select(s => new ServiceDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price,
+                FacilityId = s.FacilityId,
+                IsDeleted = s.IsDeleted
+            });
+
+            return serviceDtos;
+        }
+        
         public async Task AddServiceAsync(Service service, int airportId)
         {
             var facility = await _facilityRepository.GetFacilityAsync(service.FacilityId);

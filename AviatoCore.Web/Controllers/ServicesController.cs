@@ -28,6 +28,14 @@ public class ServicesController : ControllerBase
         return Ok(services);
     }
 
+    // GET: api/Services 
+    [HttpGet("Facility/{facilityId}")]
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetServicesByFacId(int facilityId)
+    {
+        var services = await _serviceService.GetServicesByFacIdAsync(facilityId);
+        return Ok(services);
+    }
+
     // GET: api/Services/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Service>> GetService(int id, [FromQuery] int airportId)
@@ -41,6 +49,8 @@ public class ServicesController : ControllerBase
 
         return service;
     }
+
+
 
     // PUT: api/Services/5
     [Authorize(Roles = "Director")]
