@@ -52,6 +52,8 @@ namespace AviatoCore.Application.Services
             {
                 Id = s.Id,
                 Name = s.Name,
+                Description = s.Description,
+                ImgUrl = s.ImgUrl,
                 Price = s.Price,
                 FacilityId = s.FacilityId,
                 IsDeleted = s.IsDeleted
@@ -77,6 +79,8 @@ namespace AviatoCore.Application.Services
                 {
                     Id = service.Id,
                     Name = service.Name,
+                    Description = service.Description,
+                    ImgUrl = service.ImgUrl,
                     Price = service.Price,
                     FacilityId = service.FacilityId,
                     IsDeleted = service.IsDeleted,

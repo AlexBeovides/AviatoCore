@@ -17,6 +17,20 @@ public class FacilitiesController : ControllerBase
         _facilityService = facilityService;
     }
 
+    private int UserAirportId
+        {
+            get
+            {
+                var airportIdValue = User.FindFirstValue("UserAirportId");
+                if (string.IsNullOrEmpty(airportIdValue))
+                {
+                    throw new Exception("UserAirportId is missing");
+                }
+
+                return int.Parse(airportIdValue);
+            }
+        }
+
     // GET: api/Facilities 
     [Authorize(Roles = "Director")]
     [HttpGet]
@@ -65,9 +79,9 @@ public class FacilitiesController : ControllerBase
     // POST: api/Facilities
     [Authorize(Roles = "Director")]
     [HttpPost]
-    public async Task<ActionResult<Facility>> PostFacility([FromQuery] int airportId, Facility facility)
+    public async Task<ActionResult<Facility>> PostFacility(Facility facility)
     {
-        if (airportId != facility.AirportId)
+        if (UserAirportId != facility.AirportId)
         {
             return BadRequest();
         }
@@ -80,11 +94,11 @@ public class FacilitiesController : ControllerBase
     // DELETE: api/Facilities/5
     [Authorize(Roles = "Director")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteFacility(int id, [FromQuery] int airportId)
+    public async Task<IActionResult> DeleteFacility(int id)
     {
-        var facility = await _facilityService.GetFacilityAsync(id, airportId);
+        var facility = await _facilityService.GetFacilityAsync(id, UserAirportId);   // ?
 
-        if (facility == null || facility.AirportId != airportId)
+        if (facility == null || facility.AirportId != UserAirportId)
         {
             return Unauthorized();
         }
