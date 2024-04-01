@@ -12,6 +12,7 @@ namespace AviatoCore.Application.Interfaces
     {
         Task<Flight> GetFlightAsync(int id);
         Task<IEnumerable<Flight>> GetFlightsByAirportIdAsync(int userAirportId);
+        Task<IEnumerable<Flight>> GetUncheckedFlightsByAirportIdAsync(int userAirportId);
         Task AddFlightAsync(Flight flight);
         Task UpdateFlightAsync(Flight flight);
         Task DeleteFlightAsync(int id);

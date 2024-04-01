@@ -17,21 +17,26 @@ public class FlightsController : ControllerBase
         _flightService = flightService;
     }
 
+    private int UserAirportId
+    {
+        get
+        {
+            var airportIdValue = User.FindFirstValue("UserAirportId");
+            if (string.IsNullOrEmpty(airportIdValue))
+            {
+                throw new Exception("UserAirportId is missing");
+            }
+
+            return int.Parse(airportIdValue);
+        }
+    }
+
     // GET: api/Flights 
     [Authorize(Roles = "Security,Maintenance")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Flight>>> GetFlightsByAirportId()
     {
-        var airportIdValue = User.FindFirstValue("UserAirportId");
-
-        if (string.IsNullOrEmpty(airportIdValue))
-        {
-            return BadRequest("UserAirportId is missing");
-        }
-
-        var airportId = int.Parse(airportIdValue);
-
-        return Ok(await _flightService.GetFlightsByAirportIdAsync(airportId));
+        return Ok(await _flightService.GetFlightsByAirportIdAsync(UserAirportId));
     }
 
     // GET: api/Flights/5
@@ -69,15 +74,7 @@ public class FlightsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Flight>> PostFlight(Flight flight)
     {
-        var airportIdValue = User.FindFirstValue("UserAirportId");
-
-        if (string.IsNullOrEmpty(airportIdValue))
-        {
-            return BadRequest("UserAirportId is missing");
-        }
-
-        var airportId = int.Parse(airportIdValue);
-        flight.AirportId = airportId;
+        flight.AirportId = UserAirportId;
         await _flightService.AddFlightAsync(flight);
 
         return CreatedAtAction("GetFlight", new { id = flight.Id }, flight);
@@ -100,15 +97,7 @@ public class FlightsController : ControllerBase
     {
         var flight = await _flightService.GetFlightAsync(flightId);
 
-        var airportIdValue = User.FindFirstValue("UserAirportId");
-        if (string.IsNullOrEmpty(airportIdValue))
-        {
-            return BadRequest("UserAirportId is missing");
-        }
-
-        var airportId = int.Parse(airportIdValue);
-
-        if (flight.AirportId != airportId)
+        if (flight.AirportId != UserAirportId)
         {
             return Unauthorized();
         }
@@ -118,5 +107,13 @@ public class FlightsController : ControllerBase
         await _flightService.UpdateFlightAsync(flight);
 
         return NoContent();
+    }
+
+    // GET: api/Flights 
+    [Authorize(Roles = "Maintenance")]
+    [HttpGet("Unchecked")]
+    public async Task<ActionResult<IEnumerable<Flight>>> GetUncheckedFlightsByAirportId()
+    {
+        return Ok(await _flightService.GetUncheckedFlightsByAirportIdAsync(UserAirportId));
     }
 }

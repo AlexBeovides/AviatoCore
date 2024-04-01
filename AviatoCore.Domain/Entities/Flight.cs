@@ -21,8 +21,7 @@ namespace AviatoCore.Domain.Entities
         public Plane? Plane { get; set; }
         public int OwnerRoleId { get; set; }
         public OwnerRole? OwnerRole { get; set; }
-        public ICollection<FlightServices>? FlightServices { get; set; }
-        public ICollection<FlightRepair>? FlightRepairs { get; set; }
+         public ICollection<FlightRepair>? FlightRepairs { get; set; }
         public bool NeedsCheck { get; set; }
         public int PlaneConditionId { get; set; }
         public PlaneCondition? PlaneCondition { get; set; }

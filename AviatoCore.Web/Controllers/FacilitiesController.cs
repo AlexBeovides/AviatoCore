@@ -18,25 +18,25 @@ public class FacilitiesController : ControllerBase
     }
 
     private int UserAirportId
+    {
+        get
         {
-            get
+            var airportIdValue = User.FindFirstValue("UserAirportId");
+            if (string.IsNullOrEmpty(airportIdValue))
             {
-                var airportIdValue = User.FindFirstValue("UserAirportId");
-                if (string.IsNullOrEmpty(airportIdValue))
-                {
-                    throw new Exception("UserAirportId is missing");
-                }
-
-                return int.Parse(airportIdValue);
+                throw new Exception("UserAirportId is missing");
             }
+
+            return int.Parse(airportIdValue);
         }
+    }
 
     // GET: api/Facilities 
     [Authorize(Roles = "Director")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Facility>>> GetFacilitiesByAirportId([FromQuery] int airportId)
+    public async Task<ActionResult<IEnumerable<Facility>>> GetFacilitiesByAirportId()
     {
-        return Ok(await _facilityService.GetFacilitiesByAirportIdAsync(airportId));
+        return Ok(await _facilityService.GetFacilitiesByAirportIdAsync(UserAirportId));
     }
 
     // GET: api/Facilities 
@@ -49,9 +49,9 @@ public class FacilitiesController : ControllerBase
 
     // GET: api/Facilities/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Facility>> GetFacility(int id, [FromQuery] int airportId)
+    public async Task<ActionResult<Facility>> GetFacility(int id)
     {
-        var facility = await _facilityService.GetFacilityAsync(id, airportId);
+        var facility = await _facilityService.GetFacilityAsync(id, UserAirportId);
 
         if (facility == null)
         {
@@ -64,9 +64,9 @@ public class FacilitiesController : ControllerBase
     // PUT: api/Facilities/5
     [Authorize(Roles = "Director")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutFacility(int id, [FromQuery] int airportId, Facility facility)
+    public async Task<IActionResult> PutFacility(int id, Facility facility)
     {
-        if (id != facility.Id || airportId != facility.AirportId)
+        if (id != facility.Id || UserAirportId != facility.AirportId)
         {
             return BadRequest();
         }

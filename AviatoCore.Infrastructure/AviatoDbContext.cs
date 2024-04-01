@@ -37,7 +37,6 @@ namespace AviatoCore.Infrastructure
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<RepairType> RepairTypes { get; set; }
         public DbSet<FlightRepair> FlightRepairs { get; set; }
-        public DbSet<FlightServices> FlightServices { get; set; }
         public DbSet<RepairDependency> RepairDependencies { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<PlaneCondition> PlaneConditions { get; set; }
@@ -48,7 +47,6 @@ namespace AviatoCore.Infrastructure
 
             ConfigureIdentityUserLogin(modelBuilder);
             ConfigureRepairDependency(modelBuilder);
-            ConfigureFlightServices(modelBuilder);
             ConfigureFlightRepair(modelBuilder);
             ConfigureRepairDependency(modelBuilder);
 
@@ -75,21 +73,6 @@ namespace AviatoCore.Infrastructure
                 .HasOne(rd => rd.RepairB)
                 .WithMany(r => r.RepairBDependencies)
                 .HasForeignKey(rd => rd.RepairBId)
-                .OnDelete(DeleteBehavior.NoAction);
-        }
-
-        private void ConfigureFlightServices(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<FlightServices>()
-                .HasOne(fs => fs.Flight)
-                .WithMany(f => f.FlightServices)
-                .HasForeignKey(fs => fs.FlightId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<FlightServices>()
-                .HasOne(fs => fs.Service)
-                .WithMany(s => s.FlightServices)
-                .HasForeignKey(fs => fs.ServiceId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
 

@@ -4,6 +4,7 @@ using AviatoCore.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 [Route("api/[controller]")]
@@ -20,11 +21,25 @@ public class ServicesController : ControllerBase
         _facilityService = facilityService;
     }
 
+    private int UserAirportId
+    {
+        get
+        {
+            var airportIdValue = User.FindFirstValue("UserAirportId");
+            if (string.IsNullOrEmpty(airportIdValue))
+            {
+                throw new Exception("UserAirportId is missing");
+            }
+
+            return int.Parse(airportIdValue);
+        }
+    }
+
     // GET: api/Services 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetServices([FromQuery] int airportId)
+    public async Task<ActionResult<IEnumerable<ServiceDto>>> GetServices()
     {
-        var services = await _serviceService.GetServicesByAirportIdAsync(airportId);
+        var services = await _serviceService.GetServicesByAirportIdAsync(UserAirportId);
         return Ok(services);
     }
 
@@ -38,9 +53,9 @@ public class ServicesController : ControllerBase
 
     // GET: api/Services/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Service>> GetService(int id, [FromQuery] int airportId)
+    public async Task<ActionResult<Service>> GetService(int id)
     {
-        var service = await _serviceService.GetServiceAsync(id, airportId);
+        var service = await _serviceService.GetServiceAsync(id, UserAirportId);
 
         if (service == null)
         {
@@ -50,12 +65,10 @@ public class ServicesController : ControllerBase
         return service;
     }
 
-
-
     // PUT: api/Services/5
     [Authorize(Roles = "Director")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutService(int id, [FromQuery] int airportId, ServiceDto serviceDto)
+    public async Task<IActionResult> PutService(int id, ServiceDto serviceDto)
     {
         var service = new Service
         {
@@ -68,7 +81,7 @@ public class ServicesController : ControllerBase
             IsDeleted = serviceDto.IsDeleted
         };
 
-        await _serviceService.UpdateServiceAsync(service, airportId);
+        await _serviceService.UpdateServiceAsync(service, UserAirportId);
 
         return NoContent();
     }
@@ -76,7 +89,7 @@ public class ServicesController : ControllerBase
     // POST: api/Services
     [Authorize(Roles = "Director")]
     [HttpPost]
-    public async Task<ActionResult<Service>> PostService([FromQuery] int airportId, ServiceDto serviceDto)
+    public async Task<ActionResult<Service>> PostService(ServiceDto serviceDto)
     {
         var service = new Service
         {
@@ -89,7 +102,7 @@ public class ServicesController : ControllerBase
             IsDeleted = serviceDto.IsDeleted
         };
 
-        await _serviceService.AddServiceAsync(service, airportId);
+        await _serviceService.AddServiceAsync(service, UserAirportId);
 
         serviceDto.Id = service.Id; // Assuming AddServiceAsync sets the Id of the service
 
@@ -99,9 +112,9 @@ public class ServicesController : ControllerBase
     // DELETE: api/Services/5
     [Authorize(Roles = "Director")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteService(int id, [FromQuery] int airportId)
+    public async Task<IActionResult> DeleteService(int id)
     {
-        var service = await _serviceService.GetServiceAsync(id, airportId);
+        var service = await _serviceService.GetServiceAsync(id, UserAirportId);
 
         await _serviceService.DeleteServiceAsync(id);
 

@@ -18,20 +18,26 @@ public class ReviewsController : ControllerBase
     {
         _reviewService = reviewService;
     }
+    private int UserAirportId
+    {
+        get
+        {
+            var airportIdValue = User.FindFirstValue("UserAirportId");
+            if (string.IsNullOrEmpty(airportIdValue))
+            {
+                throw new Exception("UserAirportId is missing");
+            }
+
+            return int.Parse(airportIdValue);
+        }
+    }
 
     // GET: api/Reviews 
     [Authorize(Roles = "Director")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
     {
-        var airportIdValue = User.FindFirstValue("UserAirportId");
-        if (string.IsNullOrEmpty(airportIdValue))
-        {
-            return BadRequest("UserAirportId is missing");
-        }
-
-        var airportId = int.Parse(airportIdValue);
-        var reviews = await _reviewService.GetReviewsByAirportIdAsync(airportId);
+        var reviews = await _reviewService.GetReviewsByAirportIdAsync(UserAirportId);
         return Ok(reviews);
     }
 
@@ -40,14 +46,7 @@ public class ReviewsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Review>> GetReview(int id)
     {
-        var airportIdValue = User.FindFirstValue("UserAirportId");
-        if (string.IsNullOrEmpty(airportIdValue))
-        {
-            return BadRequest("UserAirportId is missing");
-        }
-        var airportId = int.Parse(airportIdValue);
-
-        var review = await _reviewService.GetReviewAsync(id, airportId);
+        var review = await _reviewService.GetReviewAsync(id, UserAirportId);
 
         if (review == null)
         {
@@ -60,7 +59,7 @@ public class ReviewsController : ControllerBase
     // POST: api/Reviews
     [Authorize(Roles = "Client")]
     [HttpPost]
-    public async Task<ActionResult<Review>> PostReview(ReviewDto reviewDto)
+    public async Task<ActionResult<Review>> PostReview(PostReviewDto reviewDto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
@@ -70,7 +69,7 @@ public class ReviewsController : ControllerBase
 
         var review = new Review
         {
-            Id = reviewDto.Id,
+            //Id = 0,
             Rating = reviewDto.Rating,
             Comment = reviewDto.Comment,
             ReviewedAt = DateTime.UtcNow,
@@ -79,8 +78,6 @@ public class ReviewsController : ControllerBase
         };
 
         await _reviewService.AddReviewAsync(review);
-
-        reviewDto.Id = review.Id; // Assuming AddServiceAsync sets the Id of the service
 
         return CreatedAtAction("GetReview", new { id = review.Id }, review);
     }

@@ -16,6 +16,7 @@ namespace AviatoCore.Domain.Entities
         public DateTime StartedAt { get; set; }
         public DateTime FinishedAt { get; set; }
         public double Duration { get; set; }   // measured in hours
+        public double RepairCost { get; set; }
         public int RepairId { get; set; }
         public Repair? Repair { get; set; }
         public int FlightId { get; set; }

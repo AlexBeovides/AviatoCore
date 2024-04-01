@@ -30,6 +30,11 @@ namespace AviatoCore.Application.Services
             var flights = await _flightRepository.GetAllFlightsAsync();
             return flights.Where(f => f.AirportId == userAirportId);
         }
+        public async Task<IEnumerable<Flight>> GetUncheckedFlightsByAirportIdAsync(int userAirportId)
+        {
+            var flights = await _flightRepository.GetAllFlightsAsync();
+            return flights.Where(f => f.AirportId == userAirportId && f.NeedsCheck==true);
+        }
 
         public async Task AddFlightAsync(Flight flight)
         {
