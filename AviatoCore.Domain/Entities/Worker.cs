@@ -13,7 +13,7 @@ namespace AviatoCore.Domain.Entities
         public string WorkerId { get; set; }
         public string UserId { get; set; } // Foreign key to User
         public int AirportId { get; set; }
-        public User User { get; set; } // Navigation property
-        public Airport Airport { get; set; }
+        public User? User { get; set; } // Navigation property
+        public Airport? Airport { get; set; }
     }
 }

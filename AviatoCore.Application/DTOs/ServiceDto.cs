@@ -17,6 +17,5 @@ namespace AviatoCore.Application.DTOs
         public int FacilityId { get; set; }
         public double AverageRating { get; set; }
         public bool IsDeleted { get; set; }
-
     }
 }

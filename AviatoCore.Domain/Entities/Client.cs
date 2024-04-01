@@ -14,17 +14,17 @@ namespace AviatoCore.Domain.Entities
         public string UserId { get; set; } // Foreign key to User
         public string Country { get; set; }
         public int ClientTypeId { get; set; }
-        public User User { get; set; } // Navigation property
-        public ClientType ClientType { get; set; }
-        public ICollection<Plane> Planes { get; set; }
-        public ICollection<ClientServices> ClientServices { get; set; }
-        public ICollection<Review> Reviews { get; set; }
+        public User? User { get; set; } // Navigation property
+        public ClientType? ClientType { get; set; }
+        public ICollection<Plane>? Planes { get; set; }
+        public ICollection<ClientServices>? ClientServices { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
     }
 
     public class ClientType
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Client> Clients { get; set; }
+        public ICollection<Client>? Clients { get; set; }
     }
 }

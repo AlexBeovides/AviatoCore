@@ -34,7 +34,7 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Flight> Flights { get; set; }
+        public ICollection<Flight>? Flights { get; set; }
     }
     public class PlaneCondition
     {
@@ -42,7 +42,7 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Flight> Flights { get; set; }
-        public ICollection<RepairDependency> RepairDependencies { get; set; }
+        public ICollection<Flight>? Flights { get; set; }
+        public ICollection<RepairDependency>? RepairDependencies { get; set; }
     }
 }

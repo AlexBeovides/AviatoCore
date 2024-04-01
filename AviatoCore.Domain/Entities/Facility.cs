@@ -14,6 +14,7 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id  { get; set; }
         public string Name  { get; set; }
+        public string Description  { get; set; }
         public string Address { get; set; }
         public string ImgUrl { get; set; }
         public int AirportId { get; set; }
@@ -30,6 +31,6 @@ namespace AviatoCore.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Facility> Facilities { get; set; }
+        public ICollection<Facility>? Facilities { get; set; }
     }
 }

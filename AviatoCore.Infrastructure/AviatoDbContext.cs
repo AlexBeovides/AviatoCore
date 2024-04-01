@@ -113,40 +113,40 @@ namespace AviatoCore.Infrastructure
                     new FacilityType { Id = 6, Name = "Sushi Bar" },
                     new FacilityType { Id = 7, Name = "Restaurant" }
             );
-     
+
             modelBuilder.Entity<Facility>().HasData(
-                   new Facility { Id = 1, Name = "Breadway",Address="Street 15, 14077",ImgUrl= "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", AirportId=1, FacilityTypeId=1 },
-                   new Facility { Id = 2, Name = "AMXWorkshop", Address = "Street 20, 23078", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", AirportId = 1, FacilityTypeId = 2 },
-                   new Facility { Id = 3, Name = "Tascon", Address = "Street 5, 66778", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg", AirportId = 1, FacilityTypeId = 3 },
-                   new Facility { Id = 4, Name = "ArtesaniaDominicana", Address = "Street 1, 45556", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg", AirportId = 1, FacilityTypeId = 4 },
-                   new Facility { Id = 5, Name = "CambioExchange", Address = "Street 20, 23078", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg", AirportId = 1, FacilityTypeId = 5},
-                   new Facility { Id = 6, Name = "Ryu", Address = "Street 7, 12078", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg", AirportId = 2, FacilityTypeId = 6 },
-                   new Facility { Id = 7, Name = "Tagliatella", Address = "Street 1, 16078", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", AirportId = 2, FacilityTypeId = 7 }
-           );
+                new Facility { Id = 1, Name = "Breadway", Address = "Street 15, 14077", Description = "A popular bakery offering a variety of breads and pastries.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", AirportId = 1, FacilityTypeId = 1 },
+                new Facility { Id = 2, Name = "AMXWorkshop", Address = "Street 20, 23078", Description = "A workshop specializing in aircraft maintenance and repair.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", AirportId = 1, FacilityTypeId = 2 },
+                new Facility { Id = 3, Name = "Tascon", Address = "Street 5, 66778", Description = "A high-end shoe store offering a variety of stylish footwear.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663768/gt2fpdjqrqoqqrvrltm5.jpg", AirportId = 1, FacilityTypeId = 3 },
+                new Facility { Id = 4, Name = "ArtesaniaDominicana", Address = "Street 1, 45556", Description = "A store offering a wide range of handcrafted goods from local artisans.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/kbxqsrk2vu5xstwxrvxr.jpg", AirportId = 1, FacilityTypeId = 4 },
+                new Facility { Id = 5, Name = "CambioExchange", Address = "Street 20, 23078", Description = "A currency exchange service offering competitive rates.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/i4tka668odgaukhbiigd.jpg", AirportId = 1, FacilityTypeId = 5 },
+                new Facility { Id = 6, Name = "Ryu", Address = "Street 7, 12078", Description = "A Japanese restaurant offering a variety of sushi and other traditional dishes.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ryd91lefb0jsz0sfgr8x.jpg", AirportId = 2, FacilityTypeId = 6 },
+                new Facility { Id = 7, Name = "Tagliatella", Address = "Street 1, 16078", Description = "An Italian restaurant offering a variety of pasta dishes and pizzas.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", AirportId = 2, FacilityTypeId = 7 }
+            );
 
             modelBuilder.Entity<Service>().HasData(
-                // Breadway - Cafeteria (FacilityId = 1)
-                new Service { Id = 1, Name = "Gourmet Coffee Blend", Price = 2.99, FacilityId = 1, IsDeleted = false },
-                new Service { Id = 2, Name = "Freshly Baked Pastries", Price = 3.49, FacilityId = 1, IsDeleted = false },
-                // AMXWorkshop - Hangar (FacilityId = 2)
-                new Service { Id = 3, Name = "Aircraft Engine Tune-Up", Price = 499.99, FacilityId = 2, IsDeleted = false },
-                new Service { Id = 4, Name = "Avionic Systems Check", Price = 299.99, FacilityId = 2, IsDeleted = false },
-                // Tascon - Clothing Store (FacilityId = 3)
-                new Service { Id = 5, Name = "Tailored Pilot Uniforms", Price = 199.99, FacilityId = 3, IsDeleted = false },
-                new Service { Id = 6, Name = "Flight Jackets Collection", Price = 149.99, FacilityId = 3, IsDeleted = false },
-                // ArtesaniaDominicana - Gift Shop (FacilityId = 4)
-                new Service { Id = 7, Name = "Handcrafted Model Aircraft", Price = 59.99, FacilityId = 4, IsDeleted = false },
-                new Service { Id = 8, Name = "Aviation Memorabilia", Price = 39.99, FacilityId = 4, IsDeleted = false },
-                // CambioExchange - Currency Exchange Office (FacilityId = 5)
-                new Service { Id = 9, Name = "Foreign Currency Conversion", Price = 0.99, FacilityId = 5, IsDeleted = false },
-                new Service { Id = 10, Name = "Traveler's Cheque Issuance", Price = 1.99, FacilityId = 5, IsDeleted = false },
-                // Ryu - Sushi Bar (FacilityId = 6)
-                new Service { Id = 11, Name = "Sashimi Selection", Price = 18.99, FacilityId = 6, IsDeleted = false },
-                new Service { Id = 12, Name = "Signature Sushi Rolls", Price = 15.99, FacilityId = 6, IsDeleted = false },
-                // Tagliatella - Restaurant (FacilityId = 7)
-                new Service { Id = 13, Name = "Authentic Italian Pasta Selection", Price = 12.99, FacilityId = 7, IsDeleted = false },
-                new Service { Id = 14, Name = "Gourmet Pizza Delivery Service", Price = 15.99, FacilityId = 7, IsDeleted = false }
-            );
+                 // Breadway - Cafeteria (FacilityId = 1)
+                 new Service { Id = 1, Name = "Gourmet Coffee Blend", Description = "Delicious blend of gourmet coffee", Price = 2.99, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 2, Name = "Freshly Baked Pastries", Description = "Freshly baked pastries made with love", Price = 3.49, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 // AMXWorkshop - Hangar (FacilityId = 2)
+                 new Service { Id = 3, Name = "Aircraft Engine Tune-Up", Description = "Professional aircraft engine tune-up service", Price = 499.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 4, Name = "Avionic Systems Check", Description = "Thorough avionic systems check for your aircraft", Price = 299.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 // Tascon - Clothing Store (FacilityId = 3)
+                 new Service { Id = 5, Name = "Tailored Pilot Uniforms", Description = "Custom-tailored pilot uniforms for a perfect fit", Price = 199.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 6, Name = "Flight Jackets Collection", Description = "Stylish collection of flight jackets", Price = 149.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 // ArtesaniaDominicana - Gift Shop (FacilityId = 4)
+                 new Service { Id = 7, Name = "Handcrafted Model Aircraft", Description = "Beautiful handcrafted model aircraft", Price = 59.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 8, Name = "Aviation Memorabilia", Description = "Unique aviation memorabilia for collectors", Price = 39.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 // CambioExchange - Currency Exchange Office (FacilityId = 5)
+                 new Service { Id = 9, Name = "Foreign Currency Conversion", Description = "Convenient foreign currency conversion service", Price = 0.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 10, Name = "Traveler's Cheque Issuance", Description = "Secure traveler's cheque issuance service", Price = 1.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 // Ryu - Sushi Bar (FacilityId = 6)
+                 new Service { Id = 11, Name = "Sashimi Selection", Description = "Fresh and delicious sashimi selection", Price = 18.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 12, Name = "Signature Sushi Rolls", Description = "Exquisite signature sushi rolls", Price = 15.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 // Tagliatella - Restaurant (FacilityId = 7)
+                 new Service { Id = 13, Name = "Authentic Italian Pasta Selection", Description = "Authentic Italian pasta dishes", Price = 12.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
+                 new Service { Id = 14, Name = "Gourmet Pizza Delivery Service", Description = "Delicious gourmet pizza delivered to your location", Price = 15.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" }
+             );
 
 
             modelBuilder.Entity<Plane>().HasData(
@@ -228,6 +228,20 @@ namespace AviatoCore.Infrastructure
                 new Flight { Id = 7, ArrivalTime = DateTime.Now.AddHours(18), DepartureTime = DateTime.Now.AddHours(20), AirportId = 1, PlaneId = 2, OwnerRoleId = 1, NeedsCheck = false, PlaneConditionId = 2 },
                 new Flight { Id = 8, ArrivalTime = DateTime.Now.AddHours(21), DepartureTime = DateTime.Now.AddHours(23), AirportId = 2, PlaneId = 3, OwnerRoleId = 2, NeedsCheck = true, PlaneConditionId = 3 }
             );
+
+             modelBuilder.Entity<RepairType>().HasData(
+                new RepairType { Id = 1, Name = "Engine Overhaul" },
+                new RepairType { Id = 2, Name = "Hydraulic System Repair" },
+                new RepairType { Id = 3, Name = "Electrical System Repair" },
+                new RepairType { Id = 4, Name = "Avionics Repair" },
+                new RepairType { Id = 5, Name = "Structural Repair" },
+                new RepairType { Id = 6, Name = "Fuel System Repair" }
+            );
+
+            modelBuilder.Entity<Repair>().HasData(
+               new Repair { Id = 3, ServiceId=3, RepairTypeId=1 },
+               new Repair { Id = 4, ServiceId=4, RepairTypeId=4 }
+           );
 
         }
     }

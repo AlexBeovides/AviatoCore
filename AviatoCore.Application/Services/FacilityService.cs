@@ -47,6 +47,7 @@ namespace AviatoCore.Application.Services
                 {
                     Id = f.Id,
                     Name = f.Name,
+                    Description=f.Description,
                     Address = f.Address,
                     ImgUrl = f.ImgUrl,
                     AirportId = f.AirportId,

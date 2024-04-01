@@ -50,6 +50,8 @@ builder.Services.AddScoped<IFacilityService, FacilityService>();
 builder.Services.AddScoped<IFacilityRepository, FacilityRepository>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+builder.Services.AddScoped<IRepairService, RepairService>();
+builder.Services.AddScoped<IRepairRepository, RepairRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPlaneService, PlaneService>();

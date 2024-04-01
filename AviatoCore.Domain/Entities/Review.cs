@@ -17,8 +17,8 @@ namespace AviatoCore.Domain.Entities
         public string Comment { get; set; }
         public DateTime ReviewedAt { get; set; }
         public string ClientId { get; set; }
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
         public int ServiceId { get; set; }
-        public Service Service { get; set; }
+        public Service? Service { get; set; }
     }
 }
