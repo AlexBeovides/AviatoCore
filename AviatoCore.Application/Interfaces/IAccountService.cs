@@ -11,7 +11,6 @@ namespace AviatoCore.Application.Interfaces
 {
     public interface IAccountService
     {
-        Task<IdentityResult> AddWorker(WorkerDto workerDto);
         Task<IdentityResult> Register(RegisterDto registerDto);
         Task<LoginResultDto> Login(LoginDto loginDto);
 

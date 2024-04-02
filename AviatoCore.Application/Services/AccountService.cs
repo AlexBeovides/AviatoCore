@@ -66,42 +66,6 @@ namespace AviatoCore.Application.Services
             return result;
         }
 
-        public async Task<IdentityResult> AddWorker(WorkerDto workerDto)
-        {
-            var user = new User
-            {
-                UserName = workerDto.Email,
-                Name = workerDto.Name,
-                Surname = workerDto.Surname
-            };
-
-            var result = await _userManager.CreateAsync(user, workerDto.Password);
-
-            if (result.Succeeded)
-            {
-                var roleResult = await _userManager.AddToRoleAsync(user, workerDto.Role);
-                if (!roleResult.Succeeded)
-                {
-                    return IdentityResult.Failed(roleResult.Errors.ToArray());
-                }
-
-                if (workerDto.Role != "Admin")
-                {
-                    var worker = new Worker
-                    {
-                        WorkerId = user.Id,
-                        UserId = user.Id,
-                        AirportId = workerDto.AirportId
-                    };
-
-                    _context.Workers.Add(worker);
-                    await _context.SaveChangesAsync();
-                }
-            }
-
-            return result;
-        }
-
         private async Task<string> GenerateJwtToken(User user, int airportId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

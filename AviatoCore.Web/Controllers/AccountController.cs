@@ -44,22 +44,6 @@ namespace AviatoCore.Web.Controllers
             return BadRequest(errors);
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("add-worker")]
-        public async Task<IActionResult> AddWorker(WorkerDto workerDto)         // remove
-        {
-            var result = await _accountService.AddWorker(workerDto);
-
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-
-            var errors = result.Errors.Select(x => x.Description);
-            return BadRequest(errors);
-        }
-
-
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {

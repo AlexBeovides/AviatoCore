@@ -64,7 +64,7 @@ namespace AviatoCore.Infrastructure.Interfaces
                                  join c in _context.Clients on p.OwnerId equals c.ClientId
                                  join u in _context.Users on c.UserId equals u.Id
                                  join ct in _context.ClientTypes on c.ClientTypeId equals ct.Id
-                                 join or in _context.OwnerRoles on f.OwnerRoleId equals or.Id
+                                 join or in _context.OwnersRole on f.OwnerRoleId equals or.Id
                                  where f.AirportId == _context.Airports.FirstOrDefault(a => a.Name == "José Martí").Id
                                  && or.Name == "Captain"
                                  select new AirportClientDto { ClientName = u.Name, ClientType = ct.Name }).ToListAsync();
@@ -91,19 +91,31 @@ namespace AviatoCore.Infrastructure.Interfaces
 
         public async Task<AirportInefficientRepairServiceDto> GetAverageRepairCostAsync()
         {
-            var averagePrice = await (from r in _context.Repairs
-                                      join s in _context.Services on r.ServiceId equals s.Id
-                                      join f in _context.Facilities on s.FacilityId equals f.Id
-                                      join a in _context.Airports on f.AirportId equals a.Id
-                                      join rv in _context.Reviews on s.Id equals rv.ServiceId
-                                      where a.Name == "José Martí"
-                                      group new { r, rv, s } by a.Name into g
-                                      let avgRatingLastYear = g.Where(x => x.rv.ReviewedAt.Year == DateTime.Now.Year - 1).Average(x => x.rv.Rating)
-                                      let avgRatingOverall = g.Average(x => x.rv.Rating)
-                                      where avgRatingLastYear < 1 && avgRatingOverall < 2
-                                      select g.Average(x => x.s.Price)).FirstOrDefaultAsync();
+            var data = await (from r in _context.Repairs
+                              join s in _context.Services on r.ServiceId equals s.Id
+                              join f in _context.Facilities on s.FacilityId equals f.Id
+                              join a in _context.Airports on f.AirportId equals a.Id
+                              join rv in _context.Reviews on s.Id equals rv.ServiceId
+                              where a.Name == "José Martí"
+                              select new { r, rv, s, a }).ToListAsync();
 
-            return new AirportInefficientRepairServiceDto { AverageCost = averagePrice };
+            var groupedData = data.GroupBy(x => x.a.Name);
+
+            double? result = groupedData.Select(g =>
+            {
+                var avgRatingLastYear = g.Where(x => x.rv.ReviewedAt.Year == DateTime.Now.Year - 1).Average(x => x.rv.Rating);
+                var avgRatingOverall = g.Average(x => x.rv.Rating);
+                if (avgRatingLastYear < 1 && avgRatingOverall < 2)
+                {
+                    return g.Average(x => x.s.Price);
+                }
+                else
+                {
+                    return (double?)null;
+                }
+            }).FirstOrDefault(x => x.HasValue);
+
+            return new AirportInefficientRepairServiceDto { AverageCost = result ?? 0.0 };
         }
     }
 }
