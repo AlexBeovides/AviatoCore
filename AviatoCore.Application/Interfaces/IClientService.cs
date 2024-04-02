@@ -1,6 +1,5 @@
 ﻿using AviatoCore.Application.DTOs;
 using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using AviatoCore.Application.DTOs;
 using AviatoCore.Application.Interfaces;
 using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
+using AviatoCore.Infrastructure.Interfaces;
 using AviatoCore.Infrastructure;
 using AviatoCore.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -48,16 +48,25 @@ namespace AviatoCore.Application.Services
             var allServices = await _serviceRepository.GetAllServicesAsync();
             var filteredServices = allServices.Where(s => facilityIds.Contains(s.FacilityId));
 
-            var serviceDtos = filteredServices.Select(s => new ServiceDto
+            var serviceDtos = new List<ServiceDto>();
+
+            foreach (var service in filteredServices)
             {
-                Id = s.Id,
-                Name = s.Name,
-                Description = s.Description,
-                ImgUrl = s.ImgUrl,
-                Price = s.Price,
-                FacilityId = s.FacilityId,
-                IsDeleted = s.IsDeleted
-            });
+                var reviews = await _reviewRepository.GetReviewsByServiceIdAsync(service.Id);
+                var averageRating = reviews.Any() ? reviews.Average(r => r.Rating) : 0;
+
+                serviceDtos.Add(new ServiceDto
+                {
+                    Id = service.Id,
+                    Name = service.Name,
+                    Description = service.Description,
+                    ImgUrl = service.ImgUrl,
+                    Price = service.Price,
+                    FacilityId = service.FacilityId,
+                    IsDeleted = service.IsDeleted,
+                    AverageRating = averageRating
+                });
+            }
 
             return serviceDtos;
         }

@@ -13,7 +13,7 @@ namespace AviatoCore.Application.Interfaces
     {
         Task<IdentityResult> AddWorker(WorkerDto workerDto);
         Task<IdentityResult> Register(RegisterDto registerDto);
-        Task<LoginResult> Login(LoginDto loginDto);
+        Task<LoginResultDto> Login(LoginDto loginDto);
 
     }
 }

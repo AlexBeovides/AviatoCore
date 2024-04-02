@@ -1,6 +1,6 @@
 ﻿using AviatoCore.Application.Interfaces;
 using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
+using AviatoCore.Infrastructure.Interfaces;
 using AviatoCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;

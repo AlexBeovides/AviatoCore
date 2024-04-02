@@ -33,7 +33,7 @@ namespace AviatoCore.Infrastructure
         public DbSet<Service> Services { get; set; }
         public DbSet<ServiceRequest> ClientServices { get; set; }
         public DbSet<Flight> Flights { get; set; }
-        public DbSet<OwnerRole> OwnersRole { get; set; }
+        public DbSet<OwnerRole> OwnerRoles { get; set; }
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<RepairType> RepairTypes { get; set; }
         public DbSet<FlightRepair> FlightRepairs { get; set; }

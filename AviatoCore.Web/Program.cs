@@ -2,7 +2,7 @@ using AviatoCore.Infrastructure;
 using AviatoCore.Application.Interfaces;
 using AviatoCore.Application.Services;
 using Microsoft.EntityFrameworkCore;
-using AviatoCore.Domain.Interfaces;
+using AviatoCore.Infrastructure.Interfaces;
 using AviatoCore.Infrastructure.Repositories;
 using AviatoCore.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -65,6 +65,8 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IWorkerService, WorkerService>();
 builder.Services.AddScoped<IWorkerRepository, WorkerRepository>();
+builder.Services.AddScoped<IStatsService, StatsService>();
+builder.Services.AddScoped<IStatsRepository, StatsRepository>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

@@ -126,7 +126,7 @@ namespace AviatoCore.Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<LoginResult> Login(LoginDto loginDto)
+        public async Task<LoginResultDto> Login(LoginDto loginDto)
         {
             var result = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, isPersistent: false, lockoutOnFailure: false);
 
@@ -144,7 +144,7 @@ namespace AviatoCore.Application.Services
                 var token = await GenerateJwtToken(user, airportId);
 
 
-                return new LoginResult
+                return new LoginResultDto
                 {
                     Token = token,
                     Role = roles[0],

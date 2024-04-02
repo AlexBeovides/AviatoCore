@@ -1,5 +1,5 @@
 ﻿using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
+using AviatoCore.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

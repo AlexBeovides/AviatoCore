@@ -1,8 +1,7 @@
 ﻿using AviatoCore.Application.DTOs;
 using AviatoCore.Application.Interfaces;
-using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
-using AviatoCore.Infrastructure;
+using AviatoCore.Domain.Entities; 
+using AviatoCore.Infrastructure.Interfaces;
 using AviatoCore.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

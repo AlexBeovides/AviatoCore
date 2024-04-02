@@ -1,5 +1,4 @@
-﻿using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
+﻿using AviatoCore.Domain.Entities; 
 using System;
 using System.Collections.Generic;
 using System.Linq;

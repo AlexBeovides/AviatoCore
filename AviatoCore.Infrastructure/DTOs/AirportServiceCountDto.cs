@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AviatoCore.Application.DTOs
+namespace AviatoCore.Infrastructure.DTOs
 {
-    public class LoginResult
+    public class AirportServiceCountDto
     {
-        public string Token { get; set; }
-        public string Role { get; set; }
         public int AirportId { get; set; }
+        public string AirportName { get; set; }
+        public int ServicesCount { get; set; }
     }
 }

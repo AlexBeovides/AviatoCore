@@ -1,7 +1,7 @@
 ﻿using AviatoCore.Application.Interfaces;
-using AviatoCore.Domain.Entities;
-using AviatoCore.Domain.Interfaces;
+using AviatoCore.Domain.Entities; 
 using AviatoCore.Infrastructure;
+using AviatoCore.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

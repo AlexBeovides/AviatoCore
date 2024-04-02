@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AviatoCore.Domain.Interfaces
+namespace AviatoCore.Infrastructure.Interfaces
 {
     public interface IUserRepository
     {
