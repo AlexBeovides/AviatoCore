@@ -13,13 +13,13 @@ namespace AviatoCore.Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public DateTime StartedAt { get; set; }
-        public DateTime FinishedAt { get; set; }
+        public DateTime StartedAt { get; set; } //
+        public DateTime FinishedAt { get; set; }  //
         public double Duration { get; set; }   // measured in hours
-        public double RepairCost { get; set; }
-        public int RepairId { get; set; }
+        public double RepairCost { get; set; } 
+        public int RepairId { get; set; }  //
         public Repair? Repair { get; set; }
-        public int FlightId { get; set; }
+        public int FlightId { get; set; }  //
         public Flight? Flight { get; set; }
     }
 }

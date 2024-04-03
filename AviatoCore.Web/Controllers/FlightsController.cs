@@ -91,20 +91,11 @@ public class FlightsController : ControllerBase
     }
 
     // PUT: api/Flights/CheckFlight/5
-    [Authorize(Roles = "Security")]
-    [HttpPut("/CheckFlight/{flightId}")]
+    [Authorize(Roles = "Maintenance")]
+    [HttpPut("CheckFlight/{flightId}")]
     public async Task<IActionResult> CheckFlight(int flightId)
     {
-        var flight = await _flightService.GetFlightAsync(flightId);
-
-        if (flight.AirportId != UserAirportId)
-        {
-            return Unauthorized();
-        }
-
-        flight.NeedsCheck = false;
-
-        await _flightService.UpdateFlightAsync(flight);
+        await _flightService.UncheckFlightAsync(UserAirportId,flightId); 
 
         return NoContent();
     }

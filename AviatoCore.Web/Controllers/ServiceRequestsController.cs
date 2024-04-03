@@ -19,9 +19,23 @@ public class ServiceRequestsController : ControllerBase
         _serviceRequestService = serviceRequestService;
     }
 
+    private int UserAirportId
+    {
+        get
+        {
+            var airportIdValue = User.FindFirstValue("UserAirportId");
+            if (string.IsNullOrEmpty(airportIdValue))
+            {
+                throw new Exception("UserAirportId is missing");
+            }
+
+            return int.Parse(airportIdValue);
+        }
+    }
+
     // GET: api/ServiceRequests/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ServiceRequest>> GetClientService(int id)
+    public async Task<ActionResult<ServiceRequest>> GetServiceRequest(int id)
     {
         var serviceRequest = await _serviceRequestService.GetServiceRequestAsync(id);
 
@@ -33,10 +47,25 @@ public class ServiceRequestsController : ControllerBase
         return serviceRequest;
     }
 
+    // GET: api/ServiceRequests/Airport/5
+    [Authorize(Roles = "Director")]
+    [HttpGet()]
+    public async Task<ActionResult<IEnumerable<ServiceRequest>>> GetServiceRequestsByAirportId()
+    {
+        var serviceRequests = await _serviceRequestService.GetServiceRequestsByAirportIdAsync(UserAirportId);
+
+        if (serviceRequests == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(serviceRequests);
+    }
+
     // POST: api/ClientServices
     [Authorize(Roles = "Client")]
     [HttpPost]
-    public async Task<ActionResult<ServiceRequest>> PostClientService([FromBody] ServiceRequestDto serviceRequestDto)
+    public async Task<ActionResult<ServiceRequest>> PostServiceRequest([FromBody] ServiceRequestDto serviceRequestDto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userId))
@@ -53,7 +82,7 @@ public class ServiceRequestsController : ControllerBase
 
         await _serviceRequestService.AddServiceRequestAsync(serviceRequest);
 
-        return CreatedAtAction("GetClientService", new { id = serviceRequest.Id }, serviceRequest);
+        return CreatedAtAction("GetServiceRequest", new { id = serviceRequest.Id }, serviceRequest);
     }
 
 }

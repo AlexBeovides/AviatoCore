@@ -27,30 +27,35 @@ namespace AviatoCore.Web.Controllers
             _statsService = statsService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("repairServices")]
         public async Task<IActionResult> GetRepairServices()
         {
             return await _statsService.GetRepairServicesAsync();
 
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("majorRepairsCount")]
         public async Task<IActionResult> GetMajorRepairsCount()
         {
             return await _statsService.GetMajorRepairsCountAsync();
 
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("customersByType")]
         public async Task<IActionResult> GetCustomersByType()
         {
             return await _statsService.GetCustomersByTypeAsync();
 
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("leastVisitedSince2010")]
         public async Task<IActionResult> GetLeastVisitedSince2010()
         {
             return await _statsService.GetLeastVisitedSince2010Async();
 
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet("averageRepairCost")]
         public async Task<IActionResult> GetAverageRepairCost()
         {

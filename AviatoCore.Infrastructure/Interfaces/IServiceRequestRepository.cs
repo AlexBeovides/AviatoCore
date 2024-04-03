@@ -11,6 +11,7 @@ namespace AviatoCore.Infrastructure.Interfaces
     public interface IServiceRequestRepository
     {
         Task AddServiceRequestAsync(ServiceRequest serviceRequest);
-        Task<ServiceRequest> GetServiceRequestAsync(int id); // New method
+        Task<ServiceRequest> GetServiceRequestAsync(int id);
+        Task<IEnumerable<ServiceRequest>> GetAllServiceRequestsAsync();
     }
 }

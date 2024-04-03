@@ -37,7 +37,17 @@ namespace AviatoCore.Web.Controllers
 
             if (result.Succeeded)
             {
-                return Ok();
+                // Automatically log in the user after a successful registration
+                var loginDto = new LoginDto { Email = registerDto.Email, Password = registerDto.Password };
+                var loginResult = await _accountService.Login(loginDto);
+
+                if (loginResult != null)
+                {
+                    return Ok(new { Token = loginResult.Token, Role = loginResult.Role,
+                        AirportId = loginResult.AirportId });
+                }
+
+                return Unauthorized();
             }
 
             var errors = result.Errors.Select(x => x.Description);

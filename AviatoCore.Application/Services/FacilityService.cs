@@ -52,6 +52,7 @@ namespace AviatoCore.Application.Services
 
         public async Task AddFacilityAsync(Facility facility)
         {
+             
             await _facilityRepository.AddFacilityAsync(facility);
         }
 

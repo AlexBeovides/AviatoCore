@@ -31,24 +31,20 @@ namespace AviatoCore.Infrastructure
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<FacilityType> FacilityTypes { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<ServiceRequest> ClientServices { get; set; }
+        public DbSet<ServiceRequest> ServiceRequest { get; set; }
         public DbSet<Flight> Flights { get; set; }
         public DbSet<OwnerRole> OwnersRole { get; set; }
         public DbSet<Repair> Repairs { get; set; }
         public DbSet<RepairType> RepairTypes { get; set; }
         public DbSet<FlightRepair> FlightRepairs { get; set; }
-        public DbSet<RepairDependency> RepairDependencies { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        public DbSet<PlaneCondition> PlaneConditions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Don't forget to call base method
 
             ConfigureIdentityUserLogin(modelBuilder);
-            ConfigureRepairDependency(modelBuilder);
             ConfigureFlightRepair(modelBuilder);
-            ConfigureRepairDependency(modelBuilder);
 
             _seeder.SeedData(modelBuilder).Wait();
         }
@@ -56,24 +52,6 @@ namespace AviatoCore.Infrastructure
         private void ConfigureIdentityUserLogin(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => x.UserId);
-        }
-
-        private void ConfigureRepairDependency(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<RepairDependency>()
-                .HasKey(r => new { r.PlaneConditionId, r.RepairAId, r.RepairBId });
-
-            modelBuilder.Entity<RepairDependency>()
-                .HasOne(rd => rd.RepairA)
-                .WithMany(r => r.RepairADependencies)
-                .HasForeignKey(rd => rd.RepairAId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<RepairDependency>()
-                .HasOne(rd => rd.RepairB)
-                .WithMany(r => r.RepairBDependencies)
-                .HasForeignKey(rd => rd.RepairBId)
-                .OnDelete(DeleteBehavior.NoAction);
         }
 
         private void ConfigureFlightRepair(ModelBuilder modelBuilder)

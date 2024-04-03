@@ -15,5 +15,6 @@ namespace AviatoCore.Application.Interfaces
         Task AddFlightAsync(Flight flight);
         Task UpdateFlightAsync(Flight flight);
         Task DeleteFlightAsync(int id);
+        Task UncheckFlightAsync(int userAirportId, int id);
     }
 }

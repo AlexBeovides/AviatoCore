@@ -19,7 +19,6 @@ namespace AviatoCore.Infrastructure
 
         public async Task SeedData(ModelBuilder modelBuilder)
         {
-            //ACK
             modelBuilder.Entity<Airport>().HasData(
                 new Airport { Id = 1, Name = "José Martí", Address = "Avenida Van Troy y Final, Rancho Boyeros, Havana, Cuba", Latitude = 22.9892, Longitude = -82.4092 },
                 new Airport { Id = 2, Name = "Juan Gualberto Gómez", Address = "Matanzas, Cuba", Latitude = 23.0344, Longitude = -81.4353 },
@@ -28,7 +27,6 @@ namespace AviatoCore.Infrastructure
                 new Airport { Id = 5, Name = "Playa Baracoa", Address = "Playa Baracoa, Havana, Cuba", Latitude = 23.0328, Longitude = -82.5794 }
             );
 
-            // Add seed data for Role
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "1", Name = "Admin", NormalizedName = "ADMIN" },
                 new IdentityRole { Id = "2", Name = "Director", NormalizedName = "DIRECTOR" },
@@ -37,14 +35,12 @@ namespace AviatoCore.Infrastructure
                 new IdentityRole { Id = "5", Name = "Client", NormalizedName = "CLIENT" }
             );
 
-            //ACK
             modelBuilder.Entity<ClientType>().HasData(
                new ClientType { Id = 1, Name = "Regular" },
                new ClientType { Id = 2, Name = "VIP" },
                new ClientType { Id = 3, Name = "Company" }
             );
 
-            //ACK
             modelBuilder.Entity<Client>().HasData(
                 new Client { ClientId = "c63447a0-24dd-4390-9914-2962d12fb40c", UserId = "c63447a0-24dd-4390-9914-2962d12fb40c", Country = "URSS", ClientTypeId = 2 },
                 new Client { ClientId = "c8795973-e00b-44fb-9701-a9fb61f7ac82", UserId = "c8795973-e00b-44fb-9701-a9fb61f7ac82", Country = "Roman Empire", ClientTypeId = 3 },
@@ -54,7 +50,6 @@ namespace AviatoCore.Infrastructure
                 new Client { ClientId = "7", UserId = "7", Country = "Falconia", ClientTypeId = 1 }
             );
 
-            //ACK
             modelBuilder.Entity<User>().HasData(
                 new User { Id = "c63447a0-24dd-4390-9914-2962d12fb40c", UserName = "gorbachov@gmail.com", NormalizedUserName = "GORBACHOV@GMAIL.COM", Email = "gorbachov@gmail.com", NormalizedEmail = "GORBACHOV@GMAIL.COM", EmailConfirmed = true, PasswordHash = "03954d41-9eaa-4411-8a1d-67b1b5d39ab6", SecurityStamp = "123", ConcurrencyStamp = "123", Name = "Mijail", Surname = "Gorbachov", IsDeleted = false },
                 new User { Id = "c8795973-e00b-44fb-9701-a9fb61f7ac82", UserName = "jesus@mail.re", NormalizedUserName = "JESUS@MAIL.RE", Email = "jesus@mail.re", NormalizedEmail = "JESUS@MAIL.RE", EmailConfirmed = true, PasswordHash = "03954d41-9eaa-4411-8a1d-67b1b5d39ab6", SecurityStamp = "123", ConcurrencyStamp = "123", Name = "Jesus", Surname = "Nazareno", IsDeleted = false },
@@ -64,7 +59,6 @@ namespace AviatoCore.Infrastructure
                 new User { Id = "7", UserName = "grifi@midmail.ml", NormalizedUserName = "GRIFI@MIDMAIL.ML", Email = "grifi@midmail.ml", NormalizedEmail = "GRIFI@MIDMAIL.ML", EmailConfirmed = true, PasswordHash = "03954d41-9eaa-4411-8a1d-67b1b5d39ab6", SecurityStamp = "123", ConcurrencyStamp = "123", Name = "Griffith", Surname = "White Falcon", IsDeleted = false }
             );
 
-            //ACK
             modelBuilder.Entity<FacilityType>().HasData(
                     new FacilityType { Id = 1, Name = "Cafeteria" },
                     new FacilityType { Id = 2, Name = "Workshop" },
@@ -76,7 +70,6 @@ namespace AviatoCore.Infrastructure
                     new FacilityType { Id = 8, Name = "Dentist" }
             );
 
-            //ACK
             modelBuilder.Entity<Facility>().HasData(
                 new Facility { Id = 1, Name = "Breadway", Address = "Street 15, 14077", Description = "A popular bakery offering a variety of breads and pastries.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/womxzvcwlkmgebmkzypa.webp", AirportId = 1, FacilityTypeId = 1 },
                 new Facility { Id = 2, Name = "AMXWorkshop", Address = "Street 20, 23078", Description = "A workshop specializing in aircraft maintenance and repair.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663767/yej7dkz5v8nwp1cemm5l.jpg", AirportId = 1, FacilityTypeId = 2 },
@@ -88,32 +81,23 @@ namespace AviatoCore.Infrastructure
                 new Facility { Id = 8, Name = "Dentist", Address = "p sherman 42 wallaby way sydney", Description = "A dentist with a fish bowl.", ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711663766/ovqroknpskzubu6g3trd.jpg", AirportId = 2, FacilityTypeId = 8 }
             );
 
-            //ACK
             modelBuilder.Entity<Service>().HasData(
-                // Breadway - Cafeteria (FacilityId = 1)
-                new Service { Id = 1, Name = "Gourmet Coffee Blend", Description = "Delicious blend of gourmet coffee", Price = 2.99, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 2, Name = "Freshly Baked Pastries", Description = "Freshly baked pastries made with love", Price = 3.49, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                // AMXWorkshop - Hangar (FacilityId = 2)
-                new Service { Id = 3, Name = "Aircraft Engine Tune-Up", Description = "Professional aircraft engine tune-up service", Price = 499.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 4, Name = "Avionic Systems Check", Description = "Thorough avionic systems check for your aircraft", Price = 299.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                // Tascon - Clothing Store (FacilityId = 3)
-                new Service { Id = 5, Name = "Tailored Pilot Uniforms", Description = "Custom-tailored pilot uniforms for a perfect fit", Price = 199.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 6, Name = "Flight Jackets Collection", Description = "Stylish collection of flight jackets", Price = 149.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                // ArtesaniaDominicana - Gift Shop (FacilityId = 4)
-                new Service { Id = 7, Name = "Handcrafted Model Aircraft", Description = "Beautiful handcrafted model aircraft", Price = 59.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 8, Name = "Aviation Memorabilia", Description = "Unique aviation memorabilia for collectors", Price = 39.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                // CambioExchange - Currency Exchange Office (FacilityId = 5)
-                new Service { Id = 9, Name = "Foreign Currency Conversion", Description = "Convenient foreign currency conversion service", Price = 0.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 10, Name = "Traveler's Cheque Issuance", Description = "Secure traveler's cheque issuance service", Price = 1.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                // Ryu - Sushi Bar (FacilityId = 6)
-                new Service { Id = 11, Name = "Sashimi Selection", Description = "Fresh and delicious sashimi selection", Price = 18.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 12, Name = "Signature Sushi Rolls", Description = "Exquisite signature sushi rolls", Price = 15.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                // Tagliatella - Restaurant (FacilityId = 7)
-                new Service { Id = 13, Name = "Authentic Italian Pasta Selection", Description = "Authentic Italian pasta dishes", Price = 12.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" },
-                new Service { Id = 14, Name = "Gourmet Pizza Delivery Service", Description = "Delicious gourmet pizza delivered to your location", Price = 15.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png" }
+                new Service { Id = 1, Name = "Gourmet Coffee Blend", Description = "Delicious blend of gourmet coffee", Price = 2.99, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007305/Gourmet%20Coffe.jpg" },
+                new Service { Id = 2, Name = "Freshly Baked Pastries", Description = "Freshly baked pastries made with love", Price = 3.49, FacilityId = 1, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007423/Freshly%20baked%20pastries.jpg" },
+                new Service { Id = 3, Name = "Aircraft Engine Tune-Up", Description = "Professional aircraft engine tune-up service", Price = 499.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007651/Engine%20Tune%20Up.jpg" },
+                new Service { Id = 4, Name = "Avionic Systems Check", Description = "Thorough avionic systems check for your aircraft", Price = 299.99, FacilityId = 2, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007703/Avionic%20System%20Check.jpg" },
+                new Service { Id = 5, Name = "Tailored Pilot Uniforms", Description = "Custom-tailored pilot uniforms for a perfect fit", Price = 199.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007891/Tailored%20Pilot%20uniforms.jpg" },
+                new Service { Id = 6, Name = "Flight Jackets Collection", Description = "Stylish collection of flight jackets", Price = 149.99, FacilityId = 3, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008050/Flight%20Jackets.webp" },
+                new Service { Id = 7, Name = "Handcrafted Model Aircraft", Description = "Beautiful handcrafted model aircraft", Price = 59.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008286/Handcrafted%20Aircraft%20Models.webp" },
+                new Service { Id = 8, Name = "Aviation Memorabilia", Description = "Unique aviation memorabilia for collectors", Price = 39.99, FacilityId = 4, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008436/Aviation%20Memorabilia.webp" },
+                new Service { Id = 9, Name = "Foreign Currency Conversion", Description = "Convenient foreign currency conversion service", Price = 0.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008543/Foreign%20Currency%20Exchange.jpg" },
+                new Service { Id = 10, Name = "Traveler's Cheque Issuance", Description = "Secure traveler's cheque issuance service", Price = 1.99, FacilityId = 5, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008693/Traveler%20Cheque.webp" },
+                new Service { Id = 11, Name = "Sashimi Selection", Description = "Fresh and delicious sashimi selection", Price = 18.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009126/Sashimi%20Selection.jpg" },
+                new Service { Id = 12, Name = "Signature Sushi Rolls", Description = "Exquisite signature sushi rolls", Price = 15.99, FacilityId = 6, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009133/Sushi%20Rolls.jpg" },
+                new Service { Id = 13, Name = "Authentic Italian Pasta Selection", Description = "Authentic Italian pasta dishes", Price = 12.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009258/Italian%20pasta.webp" },
+                new Service { Id = 14, Name = "Gourmet Pizza Delivery Service", Description = "Delicious gourmet pizza delivered to your location", Price = 15.99, FacilityId = 7, IsDeleted = false, ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009458/Gourmet%20Pizza.jpg" }
             );
 
-            //ACK
             modelBuilder.Entity<OwnerRole>().HasData(
                 new OwnerRole { Id = 1, Name = "Passenger" },
                 new OwnerRole { Id = 2, Name = "Pilot" },

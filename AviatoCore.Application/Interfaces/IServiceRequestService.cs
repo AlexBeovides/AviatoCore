@@ -11,5 +11,6 @@ namespace AviatoCore.Application.Interfaces
     {
         Task<ServiceRequest> GetServiceRequestAsync(int id); // New method
         Task AddServiceRequestAsync(ServiceRequest serviceRequest);
+        Task<IEnumerable<ServiceRequest>> GetServiceRequestsByAirportIdAsync(int airportId);
     }
 }

@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace AviatoCore.Application.Services
 {
@@ -95,6 +96,11 @@ namespace AviatoCore.Application.Services
                 IsDeleted = false
             };
 
+            if(workerDto.Role=="Admin" || workerDto.Role == "Client")
+            {
+                throw new Exception();
+            }
+
             var result = await _userRepository.AddUserAsync(user, workerDto.Password);
 
             if (result.Succeeded)
@@ -125,8 +131,20 @@ namespace AviatoCore.Application.Services
 
         public async Task UpdateWorkerAsync(WorkerDto workerDto)
         {
+            if (workerDto.Role == "Client" || workerDto.Role == "Admin")
+            {
+                throw new Exception();
+            }
+
             var user = await _userRepository.GetUserAsync(workerDto.Id);
             var worker = await _workerRepository.GetWorkerAsync(workerDto.Id);
+            var role = await _userManager.GetRolesAsync(user);
+
+            if (role.Count > 0)
+            {
+                var roleString = role[0];
+                await _userManager.RemoveFromRoleAsync(user, roleString);
+            }
 
             user.UserName = workerDto.Email;
             user.Name = workerDto.Name;
@@ -137,6 +155,7 @@ namespace AviatoCore.Application.Services
 
             await _userRepository.UpdateUserAsync(user);
             await _workerRepository.UpdateWorkerAsync(worker);
+            await _userManager.AddToRoleAsync(user,  workerDto.Role );
         }
 
         public async Task DeleteWorkerAsync(string id)

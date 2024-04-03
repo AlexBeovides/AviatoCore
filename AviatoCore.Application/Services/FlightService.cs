@@ -50,5 +50,15 @@ namespace AviatoCore.Application.Services
         {
             await _flightRepository.DeleteFlightAsync(id);
         }
+        public async Task UncheckFlightAsync(int userAirportId, int id)
+        {
+            var flight = await _flightRepository.GetFlightAsync(id);
+            if (flight.AirportId != userAirportId)
+            {
+                throw new UnauthorizedAccessException("User is not authorized to uncheck this flight.");
+            }
+            flight.NeedsCheck = false;
+            await _flightRepository.UpdateFlightAsync(flight);
+        }
     }
 }

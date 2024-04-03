@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using AviatoCore.Infrastructure.Interfaces.AviatoCore.Infrastructure.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +55,8 @@ builder.Services.AddScoped<IServiceRequestService, ServiceRequestService>();
 builder.Services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
 builder.Services.AddScoped<IRepairService, RepairService>();
 builder.Services.AddScoped<IRepairRepository, RepairRepository>();
+builder.Services.AddScoped<IFlightRepairService, FlightRepairService>();
+builder.Services.AddScoped<IFlightRepairRepository, FlightRepairRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IPlaneService, PlaneService>();
@@ -116,10 +119,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-if (Environment.GetEnvironmentVariable("USE_HTTPS_REDIRECTION") == "true")
-{
-    app.UseHttpsRedirection();
-}
+app.UseHttpsRedirection();
+
 
 // Use CORS middleware here.
 app.UseCors("AllowAll");

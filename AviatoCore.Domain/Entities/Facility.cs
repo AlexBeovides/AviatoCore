@@ -23,7 +23,6 @@ namespace AviatoCore.Domain.Entities
         public FacilityType? FacilityType { get; set; }
         public ICollection<Service>? Services { get; set; }
         public bool IsDeleted { get; set; }
-
     }
     public class FacilityType
     {

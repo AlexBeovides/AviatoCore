@@ -92,11 +92,21 @@ namespace AviatoCore.Application.Services
 
         public async Task<LoginResultDto> Login(LoginDto loginDto)
         {
+            var user = await _userManager.Users
+            .Include(u => u.Worker)
+            .FirstOrDefaultAsync(u => u.UserName == loginDto.Email);
+
+            // Check if user is deleted
+            if (user != null && user.IsDeleted)
+            {
+                return null; // Or throw an exception, or return a specific result indicating the user is deleted
+            }
+
             var result = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-                var user = await _userManager.Users
+                 user = await _userManager.Users
                  .Include(u => u.Worker)
                  .FirstOrDefaultAsync(u => u.UserName == loginDto.Email);
                 var roles = await _userManager.GetRolesAsync(user);

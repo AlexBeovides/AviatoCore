@@ -17,8 +17,6 @@ namespace AviatoCore.Domain.Entities
         public Service? Service { get; set; }
         public int RepairTypeId { get; set; }
         public RepairType? RepairType { get; set; }
-        public ICollection<RepairDependency>? RepairADependencies { get; set; }
-        public ICollection<RepairDependency>? RepairBDependencies { get; set; }
         public ICollection<FlightRepair>? FlightRepairs { get; set; }
     } 
 

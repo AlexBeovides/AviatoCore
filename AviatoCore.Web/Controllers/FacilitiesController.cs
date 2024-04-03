@@ -97,12 +97,18 @@ public class FacilitiesController : ControllerBase
     // POST: api/Facilities
     [Authorize(Roles = "Director")]
     [HttpPost]
-    public async Task<ActionResult<Facility>> PostFacility(Facility facility)
+    public async Task<ActionResult<Facility>> PostFacility(CreateFacilityDto facilityDto)
     {
-        if (UserAirportId != facility.AirportId)
+        var facility = new Facility
         {
-            return BadRequest();
-        }
+            Name = facilityDto.Name,
+            Description = facilityDto.Description,
+            Address = facilityDto.Address,
+            ImgUrl = facilityDto.ImgUrl,
+            FacilityTypeId = facilityDto.FacilityTypeId,
+            AirportId = UserAirportId,
+            IsDeleted = false
+        }; 
 
         await _facilityService.AddFacilityAsync(facility);
 

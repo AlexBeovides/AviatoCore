@@ -417,9 +417,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.Property<int>("OwnerRoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlaneConditionId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
@@ -428,8 +425,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("AirportId");
 
                     b.HasIndex("OwnerRoleId");
-
-                    b.HasIndex("PlaneConditionId");
 
                     b.HasIndex("PlaneId");
 
@@ -597,23 +592,6 @@ namespace AviatoCore.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("AviatoCore.Domain.Entities.PlaneCondition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PlaneConditions");
-                });
-
             modelBuilder.Entity("AviatoCore.Domain.Entities.Repair", b =>
                 {
                     b.Property<int>("Id")
@@ -632,26 +610,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Repairs");
-                });
-
-            modelBuilder.Entity("AviatoCore.Domain.Entities.RepairDependency", b =>
-                {
-                    b.Property<int>("PlaneConditionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepairAId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RepairBId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlaneConditionId", "RepairAId", "RepairBId");
-
-                    b.HasIndex("RepairAId");
-
-                    b.HasIndex("RepairBId");
-
-                    b.ToTable("RepairDependencies");
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.RepairType", b =>
@@ -778,7 +736,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 1,
                             Description = "Delicious blend of gourmet coffee",
                             FacilityId = 1,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007305/Gourmet%20Coffe.jpg",
                             IsDeleted = false,
                             Name = "Gourmet Coffee Blend",
                             Price = 2.9900000000000002
@@ -788,7 +746,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 2,
                             Description = "Freshly baked pastries made with love",
                             FacilityId = 1,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007423/Freshly%20baked%20pastries.jpg",
                             IsDeleted = false,
                             Name = "Freshly Baked Pastries",
                             Price = 3.4900000000000002
@@ -798,7 +756,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 3,
                             Description = "Professional aircraft engine tune-up service",
                             FacilityId = 2,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007651/Engine%20Tune%20Up.jpg",
                             IsDeleted = false,
                             Name = "Aircraft Engine Tune-Up",
                             Price = 499.99000000000001
@@ -808,7 +766,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 4,
                             Description = "Thorough avionic systems check for your aircraft",
                             FacilityId = 2,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007703/Avionic%20System%20Check.jpg",
                             IsDeleted = false,
                             Name = "Avionic Systems Check",
                             Price = 299.99000000000001
@@ -818,7 +776,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 5,
                             Description = "Custom-tailored pilot uniforms for a perfect fit",
                             FacilityId = 3,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712007891/Tailored%20Pilot%20uniforms.jpg",
                             IsDeleted = false,
                             Name = "Tailored Pilot Uniforms",
                             Price = 199.99000000000001
@@ -828,7 +786,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 6,
                             Description = "Stylish collection of flight jackets",
                             FacilityId = 3,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008050/Flight%20Jackets.webp",
                             IsDeleted = false,
                             Name = "Flight Jackets Collection",
                             Price = 149.99000000000001
@@ -838,7 +796,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 7,
                             Description = "Beautiful handcrafted model aircraft",
                             FacilityId = 4,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008286/Handcrafted%20Aircraft%20Models.webp",
                             IsDeleted = false,
                             Name = "Handcrafted Model Aircraft",
                             Price = 59.990000000000002
@@ -848,7 +806,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 8,
                             Description = "Unique aviation memorabilia for collectors",
                             FacilityId = 4,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008436/Aviation%20Memorabilia.webp",
                             IsDeleted = false,
                             Name = "Aviation Memorabilia",
                             Price = 39.990000000000002
@@ -858,7 +816,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 9,
                             Description = "Convenient foreign currency conversion service",
                             FacilityId = 5,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008543/Foreign%20Currency%20Exchange.jpg",
                             IsDeleted = false,
                             Name = "Foreign Currency Conversion",
                             Price = 0.98999999999999999
@@ -868,7 +826,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 10,
                             Description = "Secure traveler's cheque issuance service",
                             FacilityId = 5,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712008693/Traveler%20Cheque.webp",
                             IsDeleted = false,
                             Name = "Traveler's Cheque Issuance",
                             Price = 1.99
@@ -878,7 +836,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 11,
                             Description = "Fresh and delicious sashimi selection",
                             FacilityId = 6,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009126/Sashimi%20Selection.jpg",
                             IsDeleted = false,
                             Name = "Sashimi Selection",
                             Price = 18.989999999999998
@@ -888,7 +846,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 12,
                             Description = "Exquisite signature sushi rolls",
                             FacilityId = 6,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009133/Sushi%20Rolls.jpg",
                             IsDeleted = false,
                             Name = "Signature Sushi Rolls",
                             Price = 15.99
@@ -898,7 +856,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 13,
                             Description = "Authentic Italian pasta dishes",
                             FacilityId = 7,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009258/Italian%20pasta.webp",
                             IsDeleted = false,
                             Name = "Authentic Italian Pasta Selection",
                             Price = 12.99
@@ -908,7 +866,7 @@ namespace AviatoCore.Infrastructure.Migrations
                             Id = 14,
                             Description = "Delicious gourmet pizza delivered to your location",
                             FacilityId = 7,
-                            ImgUrl = "https://res.cloudinary.com/dp9wcmorr/image/upload/v1711962325/ee5y2czkx2nigv4qeasj.png",
+                            ImgUrl = "https://res.cloudinary.com/docdba0ow/image/upload/v1712009458/Gourmet%20Pizza.jpg",
                             IsDeleted = false,
                             Name = "Gourmet Pizza Delivery Service",
                             Price = 15.99
@@ -939,7 +897,7 @@ namespace AviatoCore.Infrastructure.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("ClientServices");
+                    b.ToTable("ServiceRequest");
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.User", b =>
@@ -1374,12 +1332,6 @@ namespace AviatoCore.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AviatoCore.Domain.Entities.PlaneCondition", "PlaneCondition")
-                        .WithMany("Flights")
-                        .HasForeignKey("PlaneConditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("AviatoCore.Domain.Entities.Plane", "Plane")
                         .WithMany("Flights")
                         .HasForeignKey("PlaneId")
@@ -1391,8 +1343,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.Navigation("OwnerRole");
 
                     b.Navigation("Plane");
-
-                    b.Navigation("PlaneCondition");
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.FlightRepair", b =>
@@ -1442,33 +1392,6 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.Navigation("RepairType");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("AviatoCore.Domain.Entities.RepairDependency", b =>
-                {
-                    b.HasOne("AviatoCore.Domain.Entities.PlaneCondition", "PlaneCondition")
-                        .WithMany("RepairDependencies")
-                        .HasForeignKey("PlaneConditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AviatoCore.Domain.Entities.Repair", "RepairA")
-                        .WithMany("RepairADependencies")
-                        .HasForeignKey("RepairAId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("AviatoCore.Domain.Entities.Repair", "RepairB")
-                        .WithMany("RepairBDependencies")
-                        .HasForeignKey("RepairBId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("PlaneCondition");
-
-                    b.Navigation("RepairA");
-
-                    b.Navigation("RepairB");
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.Review", b =>
@@ -1638,20 +1561,9 @@ namespace AviatoCore.Infrastructure.Migrations
                     b.Navigation("Flights");
                 });
 
-            modelBuilder.Entity("AviatoCore.Domain.Entities.PlaneCondition", b =>
-                {
-                    b.Navigation("Flights");
-
-                    b.Navigation("RepairDependencies");
-                });
-
             modelBuilder.Entity("AviatoCore.Domain.Entities.Repair", b =>
                 {
                     b.Navigation("FlightRepairs");
-
-                    b.Navigation("RepairADependencies");
-
-                    b.Navigation("RepairBDependencies");
                 });
 
             modelBuilder.Entity("AviatoCore.Domain.Entities.RepairType", b =>

@@ -20,9 +20,24 @@ namespace AviatoCore.Infrastructure.Repositories
             await _context.Set<ServiceRequest>().AddAsync(serviceRequest);
             await _context.SaveChangesAsync();
         }
+
         public async Task<ServiceRequest> GetServiceRequestAsync(int id)
         {
-            return await _context.Set<ServiceRequest>().FindAsync(id);
+            var serviceRequest = await _context.Set<ServiceRequest>().FindAsync(id);
+
+            if (serviceRequest == null)
+            {
+                throw new KeyNotFoundException("Service Request not found");
+            }
+
+            return serviceRequest;
+        }
+
+        public async Task<IEnumerable<ServiceRequest>> GetAllServiceRequestsAsync()
+        {
+            
+            return await _context.Set<ServiceRequest>().ToListAsync();
+           
         }
     }
 }

@@ -9,6 +9,5 @@ namespace AviatoCore.Application.DTOs
     public class ServiceRequestDto
     {
         public int ServiceId { get; set; }
-      
     }
 }

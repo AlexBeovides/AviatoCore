@@ -22,9 +22,7 @@ namespace AviatoCore.Domain.Entities
         public int OwnerRoleId { get; set; }
         public OwnerRole? OwnerRole { get; set; }
         public ICollection<FlightRepair>? FlightRepairs { get; set; }
-        public bool NeedsCheck { get; set; }
-        public int PlaneConditionId { get; set; }
-        public PlaneCondition? PlaneCondition { get; set; }
+        public bool NeedsCheck { get; set; }  
     }
 
     public class OwnerRole
@@ -35,13 +33,5 @@ namespace AviatoCore.Domain.Entities
         public string Name { get; set; }
         public ICollection<Flight>? Flights { get; set; }
     }
-    public class PlaneCondition
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<Flight>? Flights { get; set; }
-        public ICollection<RepairDependency>? RepairDependencies { get; set; }
-    }
+  
 }

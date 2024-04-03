@@ -29,11 +29,12 @@ namespace AviatoCore.Infrastructure.Interfaces
                                         join s in _context.Services on r.ServiceId equals s.Id
                                         join i in _context.Facilities on s.FacilityId equals i.Id
                                         join a in _context.Airports on i.AirportId equals a.Id
+                                        group a by new { a.Id, a.Name, a.Latitude, a.Longitude } into g
                                         select new AirportRepairServiceDto
                                         {
-                                            Name = a.Name,
-                                            Latitude = a.Latitude,
-                                            Longitude = a.Longitude
+                                            Name = g.Key.Name,
+                                            Latitude = g.Key.Latitude,
+                                            Longitude = g.Key.Longitude
                                         }).ToListAsync();
 
             return repairServices;
